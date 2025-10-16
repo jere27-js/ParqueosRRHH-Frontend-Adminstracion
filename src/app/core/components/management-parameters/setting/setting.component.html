@@ -1,0 +1,71 @@
+<div class="card">
+    <p-confirmDialog key="confirm" [style]="{width: '300px', minWidth: '200px'}"></p-confirmDialog>
+
+    <h4>Parámetros del sistema</h4>
+    <br>
+    <p-toast></p-toast>
+    <p-table #dt [value]="settings" dataKey="id" editMode="row" [tableStyle]="{'min-width': '50rem'} " [columns]="cols"
+        responsiveLayout="scroll" [rows]="5"
+        [globalFilterFields]="['settingKey','settingValue','description','actions']" [paginator]="true"
+        [rowsPerPageOptions]="[5,10,20]" [showCurrentPageReport]="true"
+        currentPageReportTemplate="Mostrando {last} de {totalRecords} registros" [rowHover]="true" scrollHeight="450px"
+        scrollable="true">
+        <ng-template pTemplate="caption">
+            <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+                <h5 class="m-0">Configurar parámetros</h5>
+                <span class="block mt-2 md:mt-0 p-input-icon-left">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Buscar..."
+                        class="w-full sm:w-auto" />
+                </span>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="width:20%" pSortableColumn="settingKey">Clave<p-sortIcon field="settingKey"></p-sortIcon>
+                </th>
+                <th style="width:20%" pSortableColumn="settingValue">Valor<p-sortIcon field="settingValue"></p-sortIcon>
+                </th>
+                <th style="width:20%" pSortableColumn="description">Descripción<p-sortIcon
+                        field="description"></p-sortIcon></th>
+                <th style="width:20%; text-align: center;">Acciones</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-setting let-editing="editing" let-ri="rowIndex">
+            <tr [pEditableRow]="setting">
+                <td>
+                    {{setting.settingKey}}
+                </td>
+                <td>
+                    <p-cellEditor>
+                        <ng-template pTemplate="input">
+                            <textarea pInputTextarea [(ngModel)]="setting.settingValue" required
+                                [style.height.px]="setting.settingValue.length + 50"></textarea>
+                        </ng-template>
+                        <ng-template pTemplate="output">
+                            {{setting.settingValue}}
+                        </ng-template>
+                    </p-cellEditor>
+                </td>
+                <td>
+                    {{setting.description}}
+                </td>
+                <td>
+                    <div class="flex align-items-center justify-content-center gap-2">
+                        <button *ngIf="!editing" pButton pRipple type="button" pInitEditableRow icon="pi pi-pencil"
+                            (click)="onRowEditInit(setting)" class="p-button-rounded p-button-text">
+                        </button>
+                        <button *ngIf="editing" pButton pRipple type="button" pSaveEditableRow
+                            icon="pi pi-check text-white" (click)="confirm($event, setting)"
+                            class="p-button-rounded p-button-text p-button-success mr-2">
+                        </button>
+                        <button *ngIf="editing" pButton pRipple type="button" pCancelEditableRow
+                            icon="pi pi-times text-white" (click)="onRowEditCancel(setting, ri)"
+                            class="p-button-rounded p-button-text p-button-danger">
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>

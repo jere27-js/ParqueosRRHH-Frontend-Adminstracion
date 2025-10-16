@@ -1,0 +1,390 @@
+<div class="card">
+    <h4>Editar Parqueo</h4>
+</div>
+
+<div class="card">
+
+    <form [formGroup]="formularioParqueo" autocomplete="off">
+        <div class="p-fluid p-formgrid grid">
+            <div class="field col-6">
+                <label for="nombreParqueo">Nombre del Parqueo*</label>
+                <input type="text" pInputText formControlName="name">
+                <div
+                    *ngIf="formularioParqueo.get('name').touched && formularioParqueo.get('name').hasError('maxlength')">
+                    <small class="text-danger">Solo se permiten 75 caracteres</small>
+                </div>
+                <div
+                    *ngIf="formularioParqueo.get('name').touched && formularioParqueo.get('name').hasError('required')">
+                    <small class="text-danger"> Este campo es obligatorio</small>
+                </div>
+            </div>
+
+
+            <div class="field col-6">
+                <label for="address-input">Dirección*</label>
+                <input id="address-input" type="text" pInputText formControlName="address">
+                <div
+                    *ngIf="formularioParqueo.get('address').touched && formularioParqueo.get('address').hasError('maxlength')">
+                    <small class="text-danger">Solo se permiten 75 caracteres</small>
+                </div>
+                <div
+                    *ngIf="formularioParqueo.get('address').touched && formularioParqueo.get('address').hasError('required')">
+                    <small class="text-danger">Este campo es obligatorio</small>
+                </div>
+            </div>
+
+
+            <div class="field col-6">
+                <label for="float-input">Número de voluntaria</label>
+                <input id="float-input" type="text" pInputText formControlName="numberOfIdentifier">
+                <div
+                    *ngIf="formularioParqueo.get('numberOfIdentifier').invalid && (formularioParqueo.get('numberOfIdentifier').dirty || formularioParqueo.get('numberOfIdentifier').touched) || formularioParqueo.get('numberOfIdentifier').hasError('maxlength')">
+                    <small class="text-danger"> Solo se permiten 25 caracteres</small>
+                </div>
+            </div>
+
+
+
+            <div class="field col-6">
+                <label for="float-input">Contacto de Referencia</label>
+                <input id="float-input" type="text" pInputText formControlName="contactReference">
+                <div
+                    *ngIf="formularioParqueo.get('contactReference').hasError('maxlength') && formularioParqueo.get('contactReference').touched">
+                    <small class="text-danger">El campo no puede tener más de 60 caracteres</small>
+                </div>
+            </div>
+
+            <div class="field col-6">
+                <label for="phone-input">Teléfono</label>
+                <p-inputMask mask="+(502) 99999999" formControlName="phone" placeholder="+(502) xxxxxxxxx" />
+                <div *ngIf="
+            formularioParqueo.get('phone').touched &&
+            formularioParqueo.get('phone').hasError('maxlength')
+          ">
+                    <small class="text-danger">Solo se permiten 15 caracteres</small>
+                </div>
+                <div *ngIf="
+            formularioParqueo.get('phone').touched &&
+            formularioParqueo.get('phone').hasError('pattern')
+          ">
+                    <small class="text-danger">El teléfono debe ser un número válido.</small>
+                </div>
+            </div>
+
+            <div class="field col-6">
+                <label for="float-input">E-mail* </label>
+                <input id="float-input" type="email" pInputText formControlName="email">
+                <div
+                    *ngIf="formularioParqueo.get('email').touched && formularioParqueo.get('email').hasError('maxlength')">
+                    <small class="text-danger">Solo se permiten 50 caracteres</small>
+                </div>
+                <div
+                    *ngIf="formularioParqueo.get('email').touched && formularioParqueo.get('email').hasError('pattern')">
+                    <small class="text-danger">Debe ingresar un email válido.</small>
+                </div>
+            </div>
+
+            <div class="field col-6">
+                <label for="p-float-input">Estado*</label>
+                <p-dropdown [options]="status_parkings" formControlName="status" placeholder="Selecciona el Estado*"
+                    [showClear]="true" optionLabel="nameStatus" optionValue="nameStatus"
+                    emptyMessage="No hay estados disponibles">
+                </p-dropdown>
+                <!-- Mensaje para el campo requerido -->
+                <div
+                    *ngIf="formularioParqueo.get('status').hasError('required') && formularioParqueo.get('status').touched">
+                    <small class="text-danger">Este campo es obligatorio</small>
+                </div>
+            </div>
+
+            <div class="field col-6">
+                <label for="p-float-input">Descripción</label>
+                <textarea rows="5" cols="30" placeholder="Ingresa la descripción Descripción*" pInputTextarea
+                    formControlName="comments"></textarea>
+                <div *ngIf="formularioParqueo.get('comments').touched"></div>
+                <small *ngIf="commentsLength <= 255">{{commentsLength}}/255 caracteres</small>
+                <small *ngIf="commentsLength > 255" class="text-danger">Límite de caracteres excedido</small>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+<div class="card p-d-flex p-jc-center p-pt8">
+    <div class="p-fluid p-formgrid grid">
+        <div class="field col-12">
+            <h4>Espacios de Parqueo</h4>
+            <h5>Total de espacios actuales: {{totalSpaces}} </h5>
+        </div>
+    </div>
+
+    <div class="card">
+        <h5>Editar Espacios de Parqueo</h5>
+
+        <form [formGroup]="formularioSlots" autocomplete="off">
+            <div class="p-fluid grid">
+
+                <div class="field col-12 md:col-6 lg:col-6 xl:col-6">
+                    <label for="float-input">Correlativo de Parqueo*</label>
+                    <input id="float-input" type="text" pInputText formControlName="slotNumber">
+                    <div
+                        *ngIf="formularioSlots.get('slotNumber').hasError('maxlength') && formularioSlots.get('slotNumber').touched">
+                        <small class="text-danger">El campo no puede tener más de 25 caracteres</small>
+                    </div>
+                </div>
+
+                <div class="field col-12 md:col-6 lg:col-6 xl:col-3">
+                    <label for="Tipo de Slot">Tipo de Espacio*</label>
+                    <p-dropdown [options]="slotTypes" formControlName="slotType"
+                        placeholder="Seleccionar tipo de puesto" [showClear]="true" optionLabel="nameSlot"
+                        optionValue="nameSlot" emptyMessage="No hay tipos de puesto disponibles"
+                        (onChange)="updateLimitOfAssignments($event.value)">
+                    </p-dropdown>
+                </div>
+
+                <div class="field col-12 md:col-6 lg:col-6 xl:col-3">
+                    <label for="limite">Límite de Asignación*</label>
+                    <input type="number" pInputText formControlName="limitOfAssignments" [min]="2"
+                        [max]="maxAssignmentValue" placeholder="Ingrese un número" />
+
+                    <div
+                        *ngIf="formularioSlots.get('limitOfAssignments').invalid &&
+                                (formularioSlots.get('limitOfAssignments').dirty || formularioSlots.get('limitOfAssignments').touched)">
+
+                        <!-- Campo requerido -->
+                        <small class="text-danger" *ngIf="formularioSlots.get('limitOfAssignments').errors?.required">
+                            Este campo es obligatorio
+                        </small>
+
+                        <!-- Valor mínimo -->
+                        <small class="text-danger" *ngIf="formularioSlots.get('limitOfAssignments').errors?.min">
+                            El valor no puede ser menor que 2
+                        </small>
+
+                        <!-- Valor máximo -->
+                        <small class="text-danger" *ngIf="formularioSlots.get('limitOfAssignments').errors?.max">
+                            El valor no puede ser mayor que {{ maxAssignmentValue }}
+                        </small>
+
+                        <!-- Solo enteros -->
+                        <small class="text-danger" *ngIf="formularioSlots.get('limitOfAssignments').errors?.pattern">
+                            Solo se permiten números enteros
+                        </small>
+                    </div>
+                </div>
+
+
+                <div class="field col-12 md:col-6 lg:col-6 xl:col-3">
+                    <label>Tipo de Beneficio*</label>
+                    <p-dropdown [options]="benefitTypes" formControlName="benefitType"
+                        placeholder="Seleccionar Tipo de Beneficio" [showClear]="true" optionValue="nameBenefit"
+                        optionLabel="displayName" emptyMessage="No hay tipos de beneficio disponibles">
+                    </p-dropdown>
+                </div>
+
+                <div class="field col-12 md:col-6 lg:col-6 xl:col-3">
+                    <label for="float-input">Monto*</label>
+                    <input id="float-input" type="number" pInputText formControlName="amount" [min]="1"
+                        [max]="maxMontValue" />
+                    <div>
+                        <div *ngIf="
+                        formularioSlots.get('amount').invalid &&
+                        (formularioSlots.get('amount').dirty || formularioSlots.get('amount').touched)
+                        ">
+                            <small class="text-danger" *ngIf="formularioSlots.get('amount').errors?.pattern">
+                                El Monto solamente puede tener 5 dígitos y 2 decimales
+                            </small>
+                            <small class="text-danger" *ngIf="formularioSlots.get('amount').errors?.max">
+                                El Monto no puede exceder los {{ maxMontValue }}
+                            </small>
+                            <small class="text-danger" *ngIf="formularioSlots.get('amount').errors?.min">
+                                El Monto no puede ser menor a 1
+                            </small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="field col-12 md:col-6 lg:col-6 xl:col-3">
+                    <label for="p-float-input">Tipo de Vehículo*</label>
+                    <p-dropdown [options]="vehicleTypes" formControlName="vehicleType"
+                        placeholder="Seleccione el Tipo de Vehiculo" [showClear]="true" optionValue="nameVehicle"
+                        optionLabel="nameVehicle" emptyMessage="No hay tipos de vehículos disponibles">></p-dropdown>
+                </div>
+
+                <div class="field col-12 md:col-6 lg:col-6 xl:col-3">
+                    <label for="p-float-input">Estado*</label>
+                    <p-dropdown [options]="filteredStateSlot" formControlName="status" placeholder="Seleccionar Estado"
+                        [showClear]="true" optionValue="nameStateSlot" optionLabel="nameStateSlot"
+                        emptyMessage="No hay estados disponibles"></p-dropdown>
+                </div>
+
+                <div class="field col-12 md:col-6 lg:col-6 xl:col-3">
+                    <label>Cantidad de Espacios*</label>
+                    <input id="float-input" type="number" pInputText formControlName="numEspacios" [min]="1"
+                        [max]="slotsGenerateValue" placeholder="Ingrese un Número" />
+
+                    <!-- Error: mayor al máximo -->
+                    <div *ngIf="formularioSlots.get('numEspacios').hasError('max') &&
+                                formularioSlots.get('numEspacios').touched">
+                        <small class="text-danger">El valor no puede ser mayor de {{ slotsGenerateValue }}</small>
+                    </div>
+
+                    <!-- Error: no es número entero -->
+                    <div *ngIf="formularioSlots.get('numEspacios').hasError('pattern') &&
+                                formularioSlots.get('numEspacios').touched">
+                        <small class="text-danger">Solo se permiten números enteros</small>
+                    </div>
+                </div>
+
+                <div class="field col-12 md:col-6 lg:col-6 xl:col-3">
+                    <p-toast></p-toast>
+                    <div style="visibility: hidden; height: 1.5rem;">Generar Espacios</div>
+                    <button [disabled]=" formularioSlots.invalid" (click)="confirm($event)" pButton severity="primary"
+                        icon="pi pi-check" label="Generar"></button>
+                    <p-confirmPopup key="confirm"></p-confirmPopup>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <p-confirmDialog></p-confirmDialog>
+
+    <div class="table-container">
+        <br>
+        <p-confirmDialog header="Confirmación" key="confirm2" icon="pi pi-exclamation-triangle"
+            message="¿Estás seguro que quieres crear parqueos?" [style]="{width: '350px'}"
+             rejectButtonStyleClass="p-button-text">
+        </p-confirmDialog>
+
+        <div class="flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+            <div class="flex gap-2">
+                <button type="button" (click)="confirm2()" pButton icon="pi pi-check" label="Actualizar Parqueo"
+                    class="p-button-success" style="width:auto;"></button>
+                <p-button (onClick)="confirm3()" label="Cancelar" severity="danger" icon="pi pi-time" />
+            </div>
+
+            <!-- Buscador a la derecha -->
+            <div class="text-right">
+                <span class="p-input-icon-left w-full sm:w-auto">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Buscar Espacios..."
+                        class="w-full sm:w-auto" />
+                </span>
+            </div>
+        </div>
+
+
+        <p-table #dt [value]="dataSource.data" [paginator]="true" scrollable="true" [rows]="5"
+            [rowsPerPageOptions]="[5,10,20]" [showCurrentPageReport]="true" scrollHeight="400px"
+            currentPageReportTemplate="Mostrando {last} de {totalRecords} registros"
+            [globalFilterFields]="['slotNumber', 'slotType', 'limitOfAssignments', 'benefitType', 'amount', 'vehicleType', 'status']">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>Número de Parqueo</th>
+                    <th>Tipo de Espacio</th>
+                    <th>Límite de Asignación</th>
+                    <th>Tipo de Beneficio</th>
+                    <th>Monto</th>
+                    <th>Tipo Vehículo</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </ng-template>
+
+            <ng-template pTemplate="body" let-slot let-i="rowIndex">
+                <tr>
+                    <td>
+                        <input pInputText type="text" [(ngModel)]="slot.slotNumber"
+                            placeholder="Identificador del puesto" title="Identificador del puesto"
+                            [disabled]="slot.status === 'OCUPADO'" />
+                    </td>
+
+                    <td>
+                        <select [(ngModel)]="slot.slotType" (ngModelChange)="onSlotTypeChange(slot)"
+                            title="Tipo de puesto" [disabled]="slot.status === 'OCUPADO'">
+                            <option *ngFor="let type of slotTypes" [value]="type.nameSlot">
+                                {{ type.nameSlot }}
+                            </option>
+                        </select>
+                    </td>
+
+                    <td>
+                        <input pInputText type="number" [(ngModel)]="slot.limitOfAssignments"
+                            name="limitOfAssignments{{ i }}"
+                            [disabled]="slot.status === 'OCUPADO' || slot.slotType === 'SIMPLE'"
+                            [required]="slot.slotType !== 'SIMPLE'" [min]="2" [max]="maxAssignmentValue"
+                            placeholder="Máximo de asignaciones" title="Máximo de asignaciones permitidas"
+                            #limitInput="ngModel" pattern="^[0-9]+$" />
+                        <div *ngIf="limitInput.invalid && (limitInput.dirty || limitInput.touched)">
+                            <small class="text-danger" *ngIf="limitInput.errors?.max">
+                                El valor no puede ser mayor que {{ maxAssignmentValue }}
+                            </small>
+                            <small class="text-danger" *ngIf="limitInput.errors?.min">
+                                El valor no puede ser menor de 2
+                            </small>
+                            <small class="text-danger" *ngIf="limitInput.errors?.required">
+                                Este campo es obligatorio
+                            </small>
+                            <small class="text-danger" *ngIf="limitInput.errors?.pattern">
+                                Solo se permiten números enteros
+                            </small>
+                        </div>
+                    </td>
+
+                    <td>
+                        <select [(ngModel)]="slot.benefitType" (ngModelChange)="onBenefitTypeChange(slot)"
+                            title="Tipo de beneficio" [disabled]="slot.status === 'OCUPADO'">
+                            <option *ngFor="let type of benefitTypes" [value]="type.nameBenefit">
+                                {{ type.nameBenefit.replace('_', ' ') }}
+                            </option>
+                        </select>
+                    </td>
+                    <td>
+                        <div class="field-wrapper">
+                            <input pInputText type="number" [(ngModel)]="slot.amount"
+                                [disabled]="slot.status === 'OCUPADO' || !slot.allowAmount"
+                                [required]="slot.allowAmount" placeholder="Monto del beneficio"
+                                title="Monto del beneficio" [pattern]="'^\\d{1,5}(\\.\\d{0,2})?$'" [min]="1"
+                                [max]="maxMontValue"
+                                [ngClass]="{'input-error': slot.allowAmount && (slot.amount === 0 || slot.amount > maxMontValue || !amountPattern2.test(slot.amount?.toString()))}"
+                                (ngModelChange)="validateAmount(slot)" />
+                            <small *ngIf="slot.allowAmount && slot.amount === 0" class="text-danger">El monto no puede
+                                ser
+                                0.</small>
+                            <small *ngIf="slot.allowAmount && slot.amount > maxMontValue" class="text-danger">El monto
+                                no
+                                puede ser mayor a {{ maxMontValue }}.</small>
+                        </div>
+                    </td>
+
+                    <td>
+                        <select [(ngModel)]="slot.vehicleType" (ngModelChange)="onSlotTypeChange(slot)"
+                            title="Tipo de vehículo" [disabled]="slot.status === 'OCUPADO'">
+                            <option *ngFor="let type of vehicleTypes" [value]="type.nameVehicle">{{ type.nameVehicle }}
+                            </option>
+                        </select>
+                    </td>
+
+                    <td>
+                        <select [(ngModel)]="slot.status" [disabled]="slot.status === 'OCUPADO'"
+                            title="Estado del puesto">
+                            <option *ngFor="let status of filteredStateSlot" [value]="status.nameStateSlot">{{
+                                status.nameStateSlot }}</option>
+                            <option *ngIf="slot.status === 'OCUPADO'" [value]="'OCUPADO'" disabled>OCUPADO</option>
+                        </select>
+                    </td>
+
+                    <td>
+                        <button pButton type="button" icon="pi pi-trash" class="p-button-danger"
+                            [disabled]="slot.status === 'OCUPADO'" (click)="deleteParkingSlot(slot.slotNumber)"
+                            title="Eliminar puesto"></button>
+                    </td>
+                </tr>
+            </ng-template>
+
+        </p-table>
+
+
+
+
+    </div>

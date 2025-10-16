@@ -1,0 +1,116 @@
+<div class="card">
+    <h4>Detalle de Notificación</h4>
+    <form [formGroup]="notificationForm" (ngSubmit)="onSubmit()" autocomplete="off">
+
+        <!-- Asunto -->
+        <div class="flex flex-column gap-2 mb-3">
+            <label for="subject">Asunto*</label>
+            <input id="subject" type="text" pInputText formControlName="subject" placeholder="Escribe el asunto"
+                class="w-full" />
+            <small class="text-danger"
+                *ngIf="notificationForm.get('subject')?.invalid && notificationForm.get('subject')?.touched">
+                <ng-container *ngIf="notificationForm.get('subject')?.hasError('required')">
+                    El asunto es obligatorio.
+                </ng-container>
+                <ng-container *ngIf="notificationForm.get('subject')?.hasError('maxlength')">
+                    El asunto no debe exceder los 50 caracteres.
+                </ng-container>
+            </small>
+        </div>
+
+        <!-- Mensaje -->
+        <div class="flex flex-column gap-2 mb-3">
+            <label for="message">Mensaje*</label>
+            <textarea id="message" rows="5" pInputTextarea formControlName="message" placeholder="Escribe el mensaje"
+                class="w-full"></textarea>
+            <small class="text-danger"
+                *ngIf="notificationForm.get('message')?.invalid && notificationForm.get('message')?.touched">
+                <ng-container *ngIf="notificationForm.get('message')?.hasError('required')">
+                    El mensaje es obligatorio.
+                </ng-container>
+                <ng-container *ngIf="notificationForm.get('message')?.hasError('maxlength')">
+                    El mensaje no puede superar los 500 caracteres.
+                </ng-container>
+            </small>
+        </div>
+
+        <!-- Destinatarios -->
+        <div class="flex flex-column gap-2 mb-4 mt-4">
+            <label for="recipients">Seleccionar Destinatarios</label>
+            <div class="flex gap-3">
+                <div>
+                    <input id="individual" type="radio" formControlName="recipient" value="individual"
+                        (change)="onRecipientChange('individual')" />
+                    <label for="individual">Individual</label>
+                </div>
+                <div>
+                    <input id="group" type="radio" formControlName="recipient" value="group"
+                        (change)="onRecipientChange('group')" />
+                    <label for="group">Grupo</label>
+                </div>
+                <div>
+                    <input id="all" type="radio" formControlName="recipient" value="all"
+                        (change)="onRecipientChange('all')" />
+                    <label for="all">Todos</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- MultiSelect Usuarios -->
+        <div *ngIf="recipientSelected === 'individual'" class="flex flex-column gap-2  mt-4">
+            <p-multiSelect [options]="activeUsers" formControlName="users" placeholder="Seleccionar Usuarios"
+                optionLabel="label" styleClass="w-full md:w-80" display="chip" [filter]="true" filterBy="label"
+                [showClear]="true" [maxSelectedLabels]="7">
+            </p-multiSelect>
+        </div>
+
+        <!-- MultiSelect Grupos -->
+        <div *ngIf="recipientSelected === 'group'" class="flex flex-column gap-2  mt-4">
+            <p-multiSelect [options]="tagsFromApi" formControlName="groups" placeholder="Seleccionar Grupos"
+                optionLabel="label" styleClass="w-full md:w-80" display="chip" [filter]="true" filterBy="label"
+                [showClear]="true" [maxSelectedLabels]="9">
+            </p-multiSelect>
+        </div>
+
+        <!-- Programar Notificación -->
+        <div class="flex flex-column lg:flex-row gap-3 mb-4 mt-6">
+            <div class="flex flex-column lg:flex-row items-center gap-2">
+                <span class="text-500 font-medium">Programar Notificación</span>
+                <p-inputSwitch formControlName="scheduleNotification"></p-inputSwitch>
+            </div>
+
+            <div *ngIf="notificationForm.get('scheduleNotification')?.value"
+                class="w-full flex flex-col lg:flex-row items-center gap-2">
+
+                <label for="notificationDate" class="whitespace-nowrap font-medium">Fecha y Hora*</label>
+
+                <p-calendar formControlName="notificationDate" [showTime]="true" dateFormat="dd/mm/yy"
+                    timeFormat="HH:mm" hourFormat="24" [stepHour]="1" [stepMinute]="1" class="w-full lg:w-80"
+                    [minDate]="today" [maxDate]="threeMonthsFromToday">
+                </p-calendar>
+            </div>
+
+            <small class="text-danger block mt-1"
+                *ngIf="notificationForm.get('notificationDate')?.invalid && notificationForm.get('notificationDate')?.touched">
+                Selecciona una fecha válida.
+            </small>
+
+        </div>
+
+        <div class="buttons-container flex justify-content-center gap-3 mt-5">
+            <p-button severity="success" (click)="confirm()" label="Enviar Notificación" icon="pi pi-send"
+                class="p-button-success"></p-button>
+            <p-button (click)="cancel()" label="Cancelar" severity="danger" icon="pi pi-times"
+                class="p-button-danger"></p-button>
+        </div>
+
+    </form>
+
+    <!-- Cuadros de diálogo -->
+    <p-confirmDialog header="Confirmar" key="confirm" icon="pi pi-exclamation-triangle" [style]="{width: '350px'}">
+    </p-confirmDialog>
+
+    <p-confirmDialog header="Confirmar" key="cancel" icon="pi pi-exclamation-triangle" [style]="{width: '350px'}">
+    </p-confirmDialog>
+</div>
+<p-toast></p-toast>

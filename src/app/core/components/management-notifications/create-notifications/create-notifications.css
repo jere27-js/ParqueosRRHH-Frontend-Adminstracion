@@ -1,0 +1,46 @@
+.text-danger {
+    color: red;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+    display: block;
+}
+
+.buttons-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+/* Cambiar el tamaño del texto de los ítems en el dropdown */
+::ng-deep .p-multiselect-item {
+    font-size: 1rem;
+}
+
+/* Cambiar el color y estilo de los chips seleccionados */
+::ng-deep .p-multiselect-token {
+    font-size: 1.2rem;
+    background-color: #ff8300 !important;
+    color: white !important;
+    border-radius: 8px;
+    padding: 6px 10px;
+}
+
+/* Ajustar el tamaño del contenedor del p-multiSelect */
+::ng-deep .p-multiselect {
+    height: 60px;
+    padding: 8px;
+}
+
+/* Ajustar el panel desplegable */
+::ng-deep .p-multiselect-panel {
+    max-height: 300px;
+}
+
+/* Asegurar que el contenido del dropdown tenga buen espaciado */
+::ng-deep .p-dropdown-label {
+    padding: 10px;
+    margin: 0;
+}
+
+

@@ -1,0 +1,7 @@
+.text-danger {
+    color: red;
+  }
+
+  .text-danger {
+    margin-top: 4px; /* Para dar un pequeño espacio entre el input y el mensaje */
+  }

@@ -1,0 +1,275 @@
+
+<!--Busca información de los empleados-->
+<p-card>
+<h4>Asignación de Parqueos</h4>
+<p-toast></p-toast>
+<p-confirmDialog />
+<form [formGroup]="assignmentForm" (ngSubmit)="confirmAssignment()" class="p-fluid" autocomplete="off">
+<p-panel header="información del Colaborador" styleClass="pt-5">
+
+    <form [formGroup]="employeeForm" class="p-fluid" autocomplete="off">
+        <div class="grid ">
+          <div class="col-12 xl:col-3">
+            <label for="id">Código del Colaborador</label>
+            <input class="mr-3" id="id" pInputText formControlName="id" placeholder="Ingrese el Código" (keydown.enter)="onSearch()" 
+                    (focus)="errorMessageSearch = ''" (input)="errorMessageSearch = ''" maxlength="9" >
+            <div class="p-error block" *ngIf="errorMessageSearch ">
+                {{ errorMessageSearch }}
+            </div>
+            <div class="p-error block" *ngIf="employeeForm.get('id')?.errors?.['required'] && !employeeForm.get('id')?.pristine" >
+              El campo es obligatorio.
+          </div>
+          <div class="p-error block" *ngIf="employeeForm.get('id')?.errors?.['maxlength']">
+            Solo se permiten 8 caracteres.
+          </div>
+          </div>
+        </div>
+    </form>
+
+    <div class="grid">
+      <div class="col-12 xl:col-3">
+        <label for="parkingCardNumber">Número de Tarjeta de Parqueo</label>
+        <input id="parkingCardNumber" formControlName="parkingCardNumber" pInputText placeholder="Ingrese número de Tarjeta / opcional" />
+      </div>
+    </div>
+    <div formGroupName="employee">
+
+      <div class="grid">
+
+        <div  class="col-12 xl:col-3">
+            <label for="name">Nombre Colaborador</label>
+            <input id="name" formControlName="name"  pInputText readonly/>
+              <div class="p-error block" *ngIf="this.assignmentForm.get('employee.name')?.errors?.['required'] && !this.assignmentForm.get('employee.name')?.pristine">
+                  Nombre Requerido
+              </div>
+        </div>
+
+        <div class="col-12 xl:col-3">
+          <label for="workplace">Puesto Colaborador</label>
+          <input id="workplace" formControlName="workplace" pInputText readonly />
+        </div>
+        <div class="col-12 xl:col-3">
+          <label for="identifierDocument">Documento de Identificación</label>
+          <input id="identifierDocument" formControlName="identifierDocument" pInputText readonly />
+        </div>
+        <div class="col-12 xl:col-3">
+          <label for="company">Compañia</label>
+          <input id="company" formControlName="company" pInputText readonly/>
+        </div>
+
+      </div>
+
+      <div class="grid">
+        <div class="col-12 xl:col-3">
+            <label for="department">Departamento</label>
+            <input id="department" formControlName="department" pInputText readonly/>
+        </div>
+        <div class="col-12 xl:col-3">
+          <label for="subManagement">Subgerencia</label>
+          <input id="subManagement" formControlName="subManagement" pInputText readonly />
+        </div>
+        <div class="col-12 xl:col-3">
+          <label for="management1">Gerencia 1</label>
+          <input id="management1" formControlName="management1" pInputText readonly />
+        </div>
+        <div class="col-12 xl:col-3">
+          <label for="management2">Gerencia 2</label>
+          <input id="management2" formControlName="management2" pInputText readonly />
+        </div>
+
+      </div>
+
+      <div class="grid">
+        <div class="col-12 xl:col-3">
+            <label for="workSite">Sede</label>
+            <input id="workSite" formControlName="workSite" pInputText readonly/>
+          </div>
+        <div class="col-12 xl:col-3">
+          <label for="address">Dirección</label>
+          <input id="address" formControlName="address" pInputText readonly/>
+        </div>
+
+        <div class="col-12 xl:col-3">
+          <label for="email">Correo</label>
+          <input id="email" formControlName="email" pInputText placeholder="" readonly/>
+            <div class="p-error block" *ngIf="this.validateEmail" >
+                El campo de correo electrónico es obligatorio
+            </div>
+        </div>
+
+        <div class="col-12 xl:col-3">
+            <label for="phone">Número de Teléfono</label>
+            <input id="phone" formControlName="phone" pInputText readonly/>
+         </div>
+
+      </div>
+
+      <p-panel header="Vehículos" styleClass="pt-5">
+      <div formArrayName="vehicles">
+        <p-toolbar styleClass="mb-4 gap-2">
+            <ng-template pTemplate="left">
+                <p-button
+                    severity="success"
+                    label="Agregar vehículo"
+                    icon="pi pi-plus"
+                    (onClick)="addVehicle()"
+                 />
+            </ng-template>
+        </p-toolbar>
+
+        <div *ngFor="let vehicle of vehicles.controls; let i = index" [formGroupName]="i" class="grid">
+          <div class="col-12 md:col-4 lg:col-4 xl:col-2">
+            <label for="vehicleBadge">Placa</label>
+            <input id="vehicleBadge" formControlName="vehicleBadge" pInputText placeholder="X###XXX" maxlength="7"/>
+            <div class="p-error block" *ngIf="vehicle.get('vehicleBadge')?.errors?.['required'] && !vehicle.get('vehicleBadge')?.pristine" >
+                Placa Requerida.
+            </div>
+            <div class="p-error block" *ngIf="vehicle.get('vehicleBadge')?.errors?.['pattern']">
+                Formato invalido
+            </div>
+          </div>
+          <div class="col-12 md:col-4 lg:col-4 xl:col-2">
+            <label for="color">Color</label>
+            <input id="color" formControlName="color" pInputText maxlength="26" />
+              <div class="p-error block" *ngIf="vehicle.get('color').touched && vehicle.get('color').hasError('maxlength')">
+                  Solo se permiten 25 caracteres.
+              </div>
+              <div *ngIf="vehicle.get('color').touched && vehicle.get('color').hasError('required')">
+                  Este campo es obligatorio.
+              </div>
+          </div>
+          <div class="col-12 md:col-4 lg:col-4 xl:col-2">
+            <label for="brand">Marca</label>
+            <input id="brand" formControlName="brand" pInputText  maxlength="26"/>
+              <div class="p-error block" *ngIf="vehicle.get('brand').touched && vehicle.get('brand').hasError('maxlength')">
+                Solo se permiten 25 caracteres.
+              </div>
+               <div *ngIf="vehicle.get('brand').touched && vehicle.get('brand').hasError('required')">
+                Este campo es obligatorio.
+              </div>
+          </div>
+
+          <div class="col-12 md:col-4 lg:col-4 xl:col-2">
+            <label for="model">Modelo</label>
+            <input id="model" formControlName="model" pInputText placeholder="####" maxlength="4"/>
+                <div class="p-error block" *ngIf="vehicle.get('model')?.errors?.['required'] && !vehicle.get('model')?.pristine" >
+                    Año Requerido.
+                </div>
+                <div class="p-error block" *ngIf="vehicle.get('model')?.errors?.['pattern']">
+                    Formato invalido
+                </div>
+          </div>
+          <div class="col-12 md:col-4 lg:col-4 xl:col-2">
+            <label for="type">Tipo</label>
+            <p-dropdown formControlName="type" [options]="vehicleTypes" placeholder="Selecione Tipo" [autoWidth]="false"  required="true"></p-dropdown>
+          </div>
+          <div class="col-12 md:col-4 lg:col-4 xl:col-2">
+            <label for="type">Acción</label>
+            <div>
+                <p-button icon="pi pi-trash" severity="warning" size="small" (click)="confirmDelVehicle(i)" />
+            </div>
+          </div>
+
+        </div>
+      </div>
+      </p-panel>
+
+    </div>
+</p-panel>
+
+<!--Get available slots-->
+<p-panel header="Parqueos Disponibles" styleClass="pt-5">
+<form [formGroup]="slotsForm" (ngSubmit)="searchSlot()" class="p-fluid">
+    <div class="grid">
+        <div class="col-12 xl:col-4">
+            <label for="locationId">Ubicación:</label>
+            <p-dropdown [options]="availableLocations" optionLabel="name" placeholder="Seleccione Ubicación" (onChange)="onLocationChange($event)"></p-dropdown>
+        </div>
+        <div class="col-12 xl:col-4">
+            <label for="vehicleType">Tipo de Vehículo:</label>
+            <p-dropdown formControlName="vehicleType" [options]="vehicleTypes" placeholder="Seleccione Tipo" required="true"></p-dropdown>
+        </div>
+        <div class="col-12 xl:col-4">
+        <p-button type="submit" severity="primary" label="Buscar" [disabled]="slotsForm.invalid" styleClass="mt-15"></p-button>
+      </div>
+    </div>
+</form>
+
+<form [formGroup]="assignmentForm">
+  <div *ngIf="slots.length > 0">
+    <div class="pt-5">
+       <p class="left-title" > <b>No.de Parqueos: {{slots.length }}</b> </p>
+    </div>
+ 
+  <div class="p-fluid grid pt-3">
+
+    <div class="field col-12 md:col-4">
+      <label>Filtrar por tipo de parqueo</label>
+        <p-dropdown 
+          [options]="slotTypes" 
+          [(ngModel)]="selectedSlotType" 
+          [ngModelOptions]="{standalone: true}"
+          (onChange)="filterSlotsByType()"
+          placeholder="Seleccione tipo"
+          [showClear]="true">
+        </p-dropdown>
+    </div>
+
+    <div class="field col-12 md:col-4">
+      <label>Buscar por número o tipo</label>
+        <p-inputIconField>
+          <input 
+            pInputText 
+            [(ngModel)]="searchText" 
+            [ngModelOptions]="{standalone: true}"
+            (input)="filterSlots()" 
+            placeholder="Buscar..."/>
+        </p-inputIconField>
+    </div>
+
+  </div>
+
+      <div class="grid">
+        <div *ngFor="let slot of filteredSlots.slice(currentPage * rows, (currentPage + 1) * rows)" class="col-12 md:col-6 lg:col-4  xl:col-3">
+          <div class="card" [ngClass]="{'green-card': assignmentForm.get('slotId').value === slot.id}" >
+            <div class="card-content">
+                    <div class="card-title"><strong>No. Parqueo :</strong> {{ slot.slotNumber }}</div><br>
+                    <label class="card-description"><strong>Tipo de parqueo:</strong> {{ slot.slotType }}</label><br>
+                    <label class="card-description"><strong>Tipo de Beneficio:</strong> {{ slot.benefitType }}</label>
+                <div class="pt-15">
+                    <p-radioButton name="slotId" [value]="slot.id" formControlName="slotId" (onClick)="assignmentForm.get('slotId').setValue(slot.id)"></p-radioButton>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p-paginator  [rows]="rows" [totalRecords]="totalRecords"  [rowsPerPageOptions]="[12, 24, 48, 96, 100, 150]" (onPageChange)="onPageChange($event)"></p-paginator>
+
+    </div>
+ </form>
+</p-panel>
+<!--End Get available slots-->
+
+<p-panel header="Grupos Disponibles" styleClass="pt-5">
+    <div formArrayName="tags">
+
+        <div class="col-12 xl:col-8">
+            <label for="tag">Grupos</label>
+            <p-multiSelect [options]="availableTags" (onChange)="onTagChange($event)" placeholder="Seleccione Grupos"
+                             display="chip"[maxSelectedLabels]="6">
+            </p-multiSelect>
+         </div>
+    </div>
+
+</p-panel>
+
+    <div class="grid pt-5">
+        <div class="col-12 xl:col-6">
+            <p-button  severity="danger" label="Cancelar" (onClick)="confirmCancel()" />
+        </div>
+        <div class="col-12 xl:col-6">
+        <p-button type="submit" severity="primary" label="Guardar asignación" [disabled]="assignmentForm.invalid" ></p-button>
+        </div>
+    </div>
+</form>
+</p-card>

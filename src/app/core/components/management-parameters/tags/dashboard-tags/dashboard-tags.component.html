@@ -1,0 +1,111 @@
+<div class="grid">
+    <div class="col-12">
+        <div class="card px-6 py-6">
+            <p-toast></p-toast>
+
+            <p-toolbar styleClass="mb-4">
+                <ng-template pTemplate="right">
+                    <div class="my-2">
+                        <button pButton pRipple label="Agregar Nuevo Grupo" icon="pi pi-plus"
+                            class="p-button-success mr-2" (click)="onAddNewGroup()"></button>
+                    </div>
+                </ng-template>
+            </p-toolbar>
+
+            <p-table #dt [value]="groups" [columns]="cols" responsiveLayout="scroll" [rows]="5" [paginator]="true"
+                [rowsPerPageOptions]="[5,10,15,20]" [showCurrentPageReport]="true"
+                currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros" [scrollable]="true"
+                scrollHeight="450px">
+
+
+                <ng-template pTemplate="caption">
+                    <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+                        <h5 class="m-0">Grupos</h5>
+                        <span class="block mt-2 md:mt-0 p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                            <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Buscar..."
+                                class="w-full sm:w-auto" />
+                        </span>
+                    </div>
+                </ng-template>
+
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th pSortableColumn="name">Nombre <p-sortIcon field="name"></p-sortIcon></th>
+                        <th pSortableColumn="description">Descripción <p-sortIcon field="description"></p-sortIcon></th>
+                        <th pSortableColumn="status">Estado <p-sortIcon field="status"></p-sortIcon></th>
+                        <th>Acciones</th>
+                    </tr>
+                </ng-template>
+
+                <ng-template pTemplate="body" let-group>
+                    <tr>
+                        <td>{{ group.name }}</td>
+                        <td>{{ group.description }}</td>
+                        <td style="width: 15%; min-width: 8rem;">
+                            <p-tag [value]="group.status" [severity]="getSeverity(group.status)" />
+                        </td>
+
+                        <td style="width:15%; min-width:20rem;">
+                            <button pButton icon="pi pi-pencil" class="p-button-rounded p-button-success"
+                                (click)="onEdit(group)" style="margin-right: 8px;"></button>
+                            <button pButton icon="pi pi-trash" class="p-button-rounded p-button-warning"
+                                (click)="onDelete(group)" style="margin-right: 8px;"></button>
+                            <button pButton icon="pi pi-eye" class="p-button-rounded p-button-info"
+                                (click)="onView(group)"></button>
+                        </td>
+
+                    </tr>
+                </ng-template>
+            </p-table>
+
+            <!-- Diálogo de Confirmación para Eliminar Grupo -->
+            <p-confirmDialog key="confirmDeleteTag"></p-confirmDialog>
+
+        </div>
+    </div>
+</div>
+
+<!--Vista de un grupo-->
+<p-dialog [(visible)]="TagsDetail" [style]="{width: '1000px'}" header="Detalle del Grupo" [modal]="true"
+    class="p-fluid">
+    <ng-template pTemplate="content">
+        <div class="card">
+            <h5>Ver Grupo</h5>
+
+            <p-divider></p-divider>
+            <form [formGroup]="formTags">
+                <div class="flex flex-column md:flex-row">
+                    <div class="w-full md:w-5 flex flex-column align-items-start justify-content-start gap-3 py-3">
+
+                        <div class="flex flex-column align-items-start gap-2 w-full">
+                            <label for="name" class="w-5rem">Nombre</label>
+                            <input pInputText id="name" type="text" class="w-full" formControlName="name"
+                                [readonly]="true" />
+                        </div>
+
+                        <div class="flex flex-column align-items-start gap-2 w-full">
+                            <label for="estado" class="w-5rem">Estado</label>
+                            <p-dropdown [options]="statusOptions" formControlName="status"
+                                placeholder="Selecciona el Estado*" [showClear]="true" class="w-full"
+                                optionLabel="nameStatus" optionValue="nameStatus" [showClear]="true"
+                                emptyMessage="No hay estados disponibles" [readonly]="true">
+                            </p-dropdown>
+                        </div>
+
+                        <div class="flex flex-column align-items-start gap-2 w-full">
+                            <label for="description" class="w-5rem">Descripción</label>
+                            <textarea rows="5" cols="50" pInputTextarea class="w-full" formControlName="description"
+                                placeholder="Ingresar descripción" [readonly]="true"></textarea>
+
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <p-toast></p-toast>
+        </div>
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Salir" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+    </ng-template>
+</p-dialog>

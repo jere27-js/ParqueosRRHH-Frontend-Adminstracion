@@ -1,0 +1,12 @@
+small.text-danger {
+    color: red;
+    font-size: 0.8rem;
+    margin-top: 5px;
+}
+
+.buttons-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+}

@@ -1,0 +1,178 @@
+<div class="card">
+    <h4>Configuración de Notificaciones por Email</h4>
+    <p>  Asocia usuarios para recibir notificaciones por email según las diferentes funciones del sistema.</p>
+    <br>
+    <label for="estado" class="w-5rem">Seleccione un usuario*</label>
+    <form [formGroup]="formGroup">
+        <p-dropdown
+            [options]="users"
+            formControlName="selectedUser"
+            optionLabel="name"
+            [filter]="true"
+            filterBy="name"
+            [showClear]="true"
+            placeholder="Usuarios">
+        </p-dropdown>
+    </form>
+    <br>
+    <div class="card">
+      <h5 *ngIf="selectedUser">{{selectedUser.name}}</h5>
+      <p *ngIf="selectedUser">{{selectedUser.email}}</p>
+
+        <br>
+        <form [formGroup]="formNotifications" (ngSubmit)="onSubmit()">
+        <div class="grid">
+
+            <div class="col-12 lg:col-6 xl:col-4">
+                <div class="card mb-0">
+                    <div class="flex justify-content-between mb-1">
+                        <div>
+                            <span class="block text-500 font-medium mb-3">Formulario de Aceptación</span>
+                            <p-inputSwitch formControlName="ACCEPTANCE_FORM" />
+                        </div>
+                        <div class="flex align-items-center justify-content-center bg-blue-100 border-round" [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
+                            <i class="pi pi-book text-orange-500 text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 lg:col-6 xl:col-4">
+                <div class="card mb-0">
+                    <div class="flex justify-content-between mb-1">
+                        <div>
+                            <span class="block text-500 font-medium mb-3">Aceptación de Parqueo</span>
+                            <p-inputSwitch formControlName="ACCEPTANCE_ASSIGNMENT" />
+                        </div>
+                        <div class="flex align-items-center justify-content-center bg-blue-100 border-round" [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
+                            <i class="pi pi-thumbs-up-fill text-blue-500 text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-12 lg:col-6 xl:col-4">
+                <div class="card mb-0">
+                    <div class="flex justify-content-between mb-1">
+                        <div>
+                            <span class="block text-500 font-medium mb-3">Baja Manual de Parqueo</span>
+                            <p-inputSwitch formControlName="MANUAL_DE_ASSIGNMENT" />
+                        </div>
+                        <div class="flex align-items-center justify-content-center bg-blue-100 border-round" [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
+                            <i class="pi pi-eraser text-red-500 text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-12 lg:col-6 xl:col-4">
+                <div class="card mb-0">
+                    <div class="flex justify-content-between mb-1">
+                        <div>
+                            <span class="block text-500 font-medium mb-3">Baja Automática de Parqueo</span>
+                            <p-inputSwitch formControlName="AUTO_DE_ASSIGNMENT" />
+                        </div>
+                        <div class="flex align-items-center justify-content-center bg-blue-100 border-round" [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
+                            <i class="pi pi-times-circle text-pink-500 text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-12 lg:col-6 xl:col-4">
+                <div class="card mb-0">
+                    <div class="flex justify-content-between mb-1">
+                        <div>
+                            <span class="block text-500 font-medium mb-3">Nota de Aceptación de Descuento</span>
+                            <p-inputSwitch formControlName="DISCOUNT_NOTE" />
+                        </div>
+                        <div class="flex align-items-center justify-content-center bg-blue-100 border-round" [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
+                            <i class="pi pi-percentage text-cyan-500 text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-12 lg:col-6 xl:col-4">
+                <div class="card mb-0">
+                    <div class="flex justify-content-between mb-1">
+                        <div>
+                            <span class="block text-500 font-medium mb-3">Asignación temporal</span>
+                            <p-inputSwitch formControlName="ASSIGNMENT_LOAN" />
+                        </div>
+                        <div class="flex align-items-center justify-content-center bg-blue-100 border-round" [ngStyle]="{width: '2.8rem', height: '2.5rem'}">
+                            <i class="pi pi-clock text-green-500 text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 lg:col-6 xl:col-4">
+                <div class="card mb-0">
+                    <div class="flex justify-content-between mb-1">
+                        <div>
+                            <span class="block text-500 font-medium mb-3">Recordatorio de nota de descuento</span>
+                            <p-inputSwitch formControlName="REMINDER_DISCOUNT_NOTE" />
+                        </div>
+                        <div class="flex align-items-center justify-content-center bg-blue-100 border-round" [ngStyle]="{width: '2.8rem', height: '2.5rem'}">
+                            <i class="pi pi-bell text-green-500 text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 lg:col-6 xl:col-4">
+                <div class="card mb-0">
+                    <div class="flex justify-content-between mb-1">
+                        <div>
+                            <span class="block text-500 font-medium mb-3">Notificación bajo demanda</span>
+                            <p-inputSwitch formControlName="ONDEMAND_NOTIFICATION" />
+                        </div>
+                        <div class="flex align-items-center justify-content-center bg-blue-100 border-round" [ngStyle]="{width: '2.8rem', height: '2.5rem'}">
+                            <i class="pi pi-send text-green-500 text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+             <div class="col-12 lg:col-6 xl:col-4">
+                <div class="card mb-0">
+                    <div class="flex justify-content-between mb-1">
+                        <div>
+                            <span class="block text-500 font-medium mb-3">Reportar nota de descuento sin firma</span>
+                            <p-inputSwitch formControlName="DISCOUNT_NOTE_ESCALATION" />
+                        </div>
+                        <div class="flex align-items-center justify-content-center bg-blue-100 border-round" [ngStyle]="{width: '2.8rem', height: '2.5rem'}">
+                            <i class="pi pi-exclamation-triangle text-green-500 text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-12 lg:col-6 xl:col-4">
+                <div class="card mb-0">
+                    <div class="flex justify-content-between mb-1">
+                        <div>
+                            <span class="block text-500 font-medium mb-3">Baja de asignación temporal</span>
+                            <p-inputSwitch formControlName="DE_ASSIGNMENT_LOAN" />
+                        </div>
+                        <div class="flex align-items-center justify-content-center bg-blue-100 border-round" [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
+                            <i class="pi pi-calendar-times text-red-500 text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </form>
+    </div>
+</div>
+
+<p-toast></p-toast>
+
+

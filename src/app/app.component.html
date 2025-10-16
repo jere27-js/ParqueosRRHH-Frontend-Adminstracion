@@ -1,0 +1,65 @@
+<router-outlet></router-outlet>
+
+<p-dialog [(visible)]="showTimeoutModal" [modal]="true" [closable]="false" [style]="{ width: '420px' }"
+    [contentStyle]="{ 'text-align': 'center', 'padding': '1.5rem' }">
+    <ng-template pTemplate="header">
+        <div style="width: 100%; text-align: center; font-weight: 600; font-size: 1.25rem;">
+            ¿Sigues ahí?
+        </div>
+    </ng-template>
+
+    <div style="margin-bottom: 1.5rem;">
+        <i class="pi pi-exclamation-triangle" style="font-size: 2.5rem; color: #f59e0b;"></i>
+
+        <p style="margin-top: 1rem; font-size: 1.2rem; font-weight: 500;">
+            Tu sesión está a punto de expirar por inactividad.
+        </p>
+        <p style="font-size: 1.1rem;">
+            ¿Deseas continuar conectado?
+        </p>
+
+
+        <!-- Barra de progreso regresiva -->
+        <div *ngIf="showTimeoutModal">
+            <p-progressBar [value]="timeoutProgress" [showValue]="false"></p-progressBar>
+        </div>
+
+        <!-- Contador de segundos -->
+        <p style="font-size: 1rem; font-weight: 600; margin-top: 0.5rem;">
+            Tiempo restante: {{ remainingSeconds }} seg
+        </p>
+    </div>
+
+    <ng-template pTemplate="footer">
+        <div style="display: flex; justify-content: center; gap: 0.75rem;">
+            <button pButton label="Sí, continuar" icon="pi pi-check" (click)="handleTimeoutResponse(true)"
+                class="p-button-rounded p-button-success"></button>
+            <button pButton label="Cerrar sesión" icon="pi pi-power-off" (click)="handleTimeoutResponse(false)"
+                class="p-button-rounded p-button-secondary"></button>
+        </div>
+    </ng-template>
+</p-dialog>
+
+<p-dialog [(visible)]="showRevokedTokenModal" [modal]="true" [closable]="false" [style]="{ width: '420px' }"
+    [contentStyle]="{ 'text-align': 'center', 'padding': '1.5rem' }">
+    <ng-template pTemplate="header">
+        <div style="width: 100%; text-align: center; font-weight: 600; font-size: 1.25rem;">
+            Se ha cerrado la sesión
+        </div>
+    </ng-template>
+
+    <div style="margin-bottom: 1.5rem;">
+        <i class="pi pi-lock" style="font-size: 2.5rem; color: #f59e0b;"></i>
+
+        <p style="margin-top: 1rem; font-size: 1.2rem; font-weight: 500;">
+            Se detecto otro inicio de sesión para este usuario, por favor intenta iniciar sesión nuevamente.
+        </p>
+    </div>
+
+    <ng-template pTemplate="footer">
+        <div style="display: flex; justify-content: center;">
+            <button pButton label="Volver a iniciar sesión" icon="pi pi-sign-in" (click)="handleReLogin()"
+                class="p-button-rounded p-button-primary"></button>
+        </div>
+    </ng-template>
+</p-dialog>

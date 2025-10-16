@@ -1,0 +1,9 @@
+.full-width-form {
+    width: 100%;
+  }
+
+  .full-width-dropdown {
+    width: 100%;
+  }
+
+  @import '~@angular/material/prebuilt-themes/indigo-pink.css';

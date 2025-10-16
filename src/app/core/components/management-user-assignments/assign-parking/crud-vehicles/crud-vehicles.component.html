@@ -1,0 +1,107 @@
+<p>crud-vehicles works!</p>
+<!--
+<p-table [value]="vehicleTypes" selectionMode="single" [(selection)]="selectedVehicleTypes">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Name</th>
+        <th>Actions</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-vehicleType>
+      <tr>
+        <td>{{vehicleType.name}}</td>
+        <td>
+          <button pButton type="button" icon="pi pi-pencil" (click)="editVehicleType(vehicleType)"></button>
+          <button pButton type="button" icon="pi pi-trash" (click)="deleteVehicleType(vehicleType)"></button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+  <p-dialog header="Vehicle Type Details" [(visible)]="vehicleTypeDialog" [modal]="true" [style]="{width: '300px'}" [closable]="false">
+    <div class="p-fluid">
+      <div class="p-field">
+        <label for="name">Name</label>
+        <input id="name" type="text" pInputText [(ngModel)]="vehicleType.name" required />
+      </div>
+    </div>
+    <p-footer>
+      <button pButton label="Cancel" icon="pi pi-times" (click)="hideDialog()"></button>
+      <button pButton label="Save" icon="pi pi-check" (click)="saveVehicleType()"></button>
+    </p-footer>
+  </p-dialog>
+  <button pButton label="New Vehicle Type" icon="pi pi-plus" (click)="openNew()"></button>
+
+
+
+
+<form (ngSubmit)="onSubmit()">
+    <div>
+      <label for="slotId">:</label>
+      <input id="slotId" [(ngModel)]="assignment.slotId" name="status" required>
+    </div>
+    <div>
+      <label for="assignmentDate">Car number:</label>
+      <input id="assignmentDate" [(ngModel)]="assignment.parkingCardNumber" name="assignmentDate" required>
+    </div>
+    <div>
+      <label for="formDecisionDate">name:</label>
+      <input id="formDecisionDate" [(ngModel)]="assignment.employee.name" name="formDecisionDate" required>
+    </div>
+    <div>
+      <label for="parkingCardNumber">Parking Card Number:</label>
+      <input id="parkingCardNumber" [(ngModel)]="assignment.parkingCardNumber" name="parkingCardNumber" required>
+    </div>
+    <div>
+      <label for="benefitType">Benefit Type:</label>
+      <input id="benefitType" [(ngModel)]="assignment.benefitType" name="benefitType" required>
+    </div>
+    <div>
+      <label for="employeeName">Employee Name:</label>
+      <input id="employeeName" [(ngModel)]="assignment.employee.name" name="employeeName" required>
+    </div>
+    <div>
+      <label for="employeeEmail">Employee Email:</label>
+      <input id="employeeEmail" [(ngModel)]="assignment.employee.email" name="employeeEmail" required>
+    </div>
+    <div>
+      <label for="employeePhone">Employee Phone:</label>
+      <input id="employeePhone" [(ngModel)]="assignment.employee.phone" name="employeePhone" required>
+    </div>
+    <div *ngFor="let vehicle of assignment.employee.vehicles; let i = index">
+      <h3>Vehicle {{i + 1}}</h3>
+      <div>
+        <label for="vehicleBadge{{i}}">Vehicle Badge:</label>
+        <input id="vehicleBadge{{i}}" [(ngModel)]="vehicle.vehicleBadge" name="vehicleBadge{{i}}" required>
+      </div>
+      <div>
+        <label for="vehicleColor{{i}}">Color:</label>
+        <input id="vehicleColor{{i}}" [(ngModel)]="vehicle.color" name="vehicleColor{{i}}" required>
+      </div>
+      <div>
+        <label for="vehicleBrand{{i}}">Brand:</label>
+        <input id="vehicleBrand{{i}}" [(ngModel)]="vehicle.brand" name="vehicleBrand{{i}}" required>
+      </div>
+      <div>
+        <label for="vehicleModel{{i}}">Model:</label>
+        <input id="vehicleModel{{i}}" [(ngModel)]="vehicle.model" name="vehicleModel{{i}}" required>
+      </div>
+      <div>
+        <label for="vehicleType{{i}}">Type:</label>
+        <input id="vehicleType{{i}}" [(ngModel)]="vehicle.type" name="vehicleType{{i}}" required>
+      </div>
+    </div>
+    <div>
+      <label for="locationName">Location Name:</label>
+      <input id="locationName" [(ngModel)]="assignment.location.name" name="locationName" required>
+    </div>
+    <div *ngFor="let slot of assignment.location.slots; let j = index">
+      <h3>Slot {{j + 1}}</h3>
+      <div>
+        <label for="slotNumber{{j}}">Slot Number:</label>
+        <input id="slotNumber{{j}}" [(ngModel)]="slot.slotNumber" name="slotNumber{{j}}" required>
+      </div>
+    </div>
+    <button type="submit">Submit</button>
+  </form>
+-->

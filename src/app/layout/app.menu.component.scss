@@ -1,0 +1,27 @@
+
+.full-width-button {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    border: none;
+    border-radius: 12px;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    font-family: 'Roboto', sans-serif; /* Aplicar fuente Roboto */
+    background-color: #3c3c3c;
+    color: white;
+    font-weight:600; /* Grosor del texto */
+    transition: background-color 0.3s ease; /* Transición suave para el hover */
+}
+
+.full-width-button:hover {
+    border-radius: 12px;
+    background-color: #2D2D2D; /* Color de fondo al hacer hover */
+
+}
+
+.full-width-button i {
+    margin-right: 8px; /* Espacio entre el icono y el texto */
+    padding-left: 8px;
+}

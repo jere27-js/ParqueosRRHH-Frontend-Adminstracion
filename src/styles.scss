@@ -1,0 +1,223 @@
+
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@use '@angular/material' as mat;
+// Plus imports for other components in your app.
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat.core();
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+$sakai-ng-primary: mat.define-palette(mat.$indigo-palette);
+$sakai-ng-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+
+// The warn palette is optional (defaults to red).
+$sakai-ng-warn: mat.define-palette(mat.$red-palette);
+
+// Create the theme object. A theme consists of configurations for individual
+// theming systems such as "color" or "typography".
+$sakai-ng-theme: mat.define-light-theme((
+  color: (
+    primary: $sakai-ng-primary,
+    accent: $sakai-ng-accent,
+    warn: $sakai-ng-warn,
+  )
+));
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include mat.all-component-themes($sakai-ng-theme);
+
+/* You can add global styles to this file, and also import other style files */
+
+$gutter: 1rem; //for primeflex grid system
+@import "assets/layout/styles/layout/layout.scss";
+
+/* PrimeNG */
+@import "../node_modules/primeng/resources/primeng.min.css";
+@import "../node_modules/primeflex/primeflex.scss";
+@import "../node_modules/primeicons/primeicons.css";
+
+/* my Primeng*/
+@import "primeng/resources/themes/lara-light-blue/theme.css";
+@import "primeng/resources/primeng.css";
+
+
+/* Demos */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
+body {
+    font-family: var(--font-family);
+    font-weight: normal;
+    background: var(--surface-ground);
+    color: var(--text-color);
+    padding: 1rem;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.card {
+    background: var(--surface-card);
+    padding: 2rem;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+}
+.mt-15{
+  margin-top: 15px
+}
+// import Quill styles in styles.scss
+@import "../node_modules/quill/dist/quill.core.css";
+@import "../node_modules/quill/dist/quill.snow.css";
+
+
+
+
+//ROBOTO1
+@import 'src/assets/layout/styles/layout/lara-light-blue/theme.css';
+@font-face {
+    font-family: 'Roboto1';
+    src: url('/assets/fonts/Roboto1/Roboto-Regular.ttf') format('truetype');
+  }
+
+  body {
+    font-family: 'Roboto1', sans-serif;
+  }
+
+//confirm dialog
+ .p-dialog-footer .p-button {
+  /* Color primario (por defecto) */
+    background: #FF8300; /* Nuevo color azul */
+    border-color: #FF8300;
+    color: white;
+    
+    &:hover {
+      background: #ec7a00;
+      border-color: #ec7a00;
+    }
+  }
+  .p-dialog-footer .p-button-text {
+  /* Color primario (por defecto) */
+    background: transparent;
+    border-color: #FF8300;
+    color: #FF8300;
+    
+    &:hover {
+      background: #FF8300;
+      border-color: #FF8300;
+      color: white;
+    }
+  }
+
+//onfirm-popup  
+  .p-confirm-popup-footer .p-button {
+  /* Color primario (por defecto) */
+    background: #FF8300; /* Nuevo color azul */
+    border-color: #FF8300;
+    color: white;
+    
+    &:hover {
+      background: #ec7a00;
+      border-color: #ec7a00;
+    }
+  }
+  .p-confirm-popup-footer .p-button-text {
+  /* Color primario (por defecto) */
+    background: transparent;
+    border-color: #FF8300;
+    color: #FF8300;
+    
+    &:hover {
+      background: #FF8300;
+      border-color: #FF8300;
+      color: white;
+    }
+  }
+
+ 
+/* Cambiar colores para todos los botones con severity con colores Atlas Claro */
+//primary
+.p-button {
+  /* Color primario (por defecto) */
+  &.p-button-primary {
+    background: #3bb2c4; /* Nuevo color azul */
+    border-color: #3bb2c4;
+    
+    &:hover {
+      background: #46d3e9;
+      border-color: #46d3e9;
+    }
+  }
+
+  /* Success */
+  &.p-button-success {
+    background: #00b09b; /* Nuevo color verde */
+    border-color: #00b09b;
+    
+    &:hover {
+      background: #008c7a;
+      border-color: #008c7a;
+    }
+  }
+
+  /* Info */
+  &.p-button-info {
+    background: #00a8be; /* Nuevo color azul claro */
+    border-color:  #00a8be;
+    
+    &:hover {
+      background:  #01a1b6;
+      border-color:  #01a1b6;
+    }
+  }
+ 
+  /* help */
+  &.p-button-help {
+    background: #FFAD17; 
+    border-color:  #FFAD17;;
+    
+    &:hover {
+      background:  #ffc04c;
+      border-color: #ffc04c;
+    }
+  }
+
+  /* Warning */
+  &.p-button-warning {
+    background: #FF8300; /* Nuevo color naranja */
+    border-color: #FF8300;
+    
+    &:hover {
+      background: #ec7a00;
+      border-color: #ec7a00;
+    }
+  }
+
+  /* Danger */
+  &.p-button-danger {
+    background: #DA291C; /* Nuevo color rojo */
+    border-color: #DA291C;
+    
+    &:hover {
+      background: #b92016;
+      border-color: #DA291C;
+    }
+  }
+
+  .p-stepper .p-stepper-header:has(~ .p-highlight) .p-stepper-separator {
+    background-color: #bb1b29;
+}
+
+p-stepper-separator{
+  background-color: #b92016;
+} 
+
+
+}

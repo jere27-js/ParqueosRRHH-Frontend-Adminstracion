@@ -1,0 +1,92 @@
+.p-d-flex {
+    display: flex;
+    align-items: center;
+}
+
+
+
+.spacing-top {
+    margin-top: 50px;
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: space-between;
+}
+
+.center-content {
+    text-align: center;
+    vertical-align: middle;
+    width: 15%;
+}
+
+.icon-success {
+    color: green;
+    font-size: 1.5rem;
+}
+
+.icon-danger {
+    color: red;
+    font-size: 1.5rem;
+}
+
+/* Contenedor del campo de búsqueda con lupa */
+.search-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.search-icon {
+    position: absolute;
+    left: 10px;
+    font-size: 16px;
+    color: #777;
+}
+
+.search-input {
+    padding-left: 30px;
+}
+
+/* scroll para la lista de destinatarios */
+.recipient-container {
+    max-height: 150px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    background-color: #f8f9fa;
+    padding: 8px;
+    border-radius: 5px;
+
+}
+
+.recipient-item {
+    padding: 8px;
+    font-size: 14px;
+    color: #333;
+    border-bottom: 1px solid #ddd;
+}
+
+.recipient-item:last-child {
+    border-bottom: none;
+}
+
+/* Estilo para las celdas de la columna 'subject' */
+.subject-cell {
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+p-dialog input:focus,
+
+p-dialog textarea:focus {
+    outline: none !important;
+    box-shadow: none !important;
+    background-color: inherit !important;
+    border: 1px solid #ccc !important;
+    color: inherit !important;
+}

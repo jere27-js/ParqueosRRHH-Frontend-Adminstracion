@@ -1,0 +1,73 @@
+
+
+  select {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    color: #333;
+    font-size: 1rem;
+  }
+
+
+  .text-danger {
+    color: #DA291C;
+  }
+
+
+  /* Estilos para el diálogo de carga */
+.p-dialog {
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Texto dentro del diálogo */
+.p-dialog p {
+    font-size: 18px;
+    color: #333;
+    text-align: center;
+}
+
+.input-error {
+    border-color: red;
+  }
+  .input-container {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .text-danger {
+    margin-top: 4px; /* Para dar un pequeño espacio entre el input y el mensaje */
+  }
+
+  td div {
+    display: flex;
+    flex-direction: column;
+  }
+
+  td small {
+    margin-top: 4px; /* Ajusta el espaciado si es necesario */
+  }
+
+
+
+.field-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.field-wrapper small.text-danger {
+  margin-top: 4px; /* Espacio pequeño arriba */
+}
+
+td input,
+td select {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+td {
+  vertical-align: top;
+}

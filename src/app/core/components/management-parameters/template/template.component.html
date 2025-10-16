@@ -1,0 +1,69 @@
+<div class="card p-fluid">
+    <h4>Editor de Correos</h4>
+    <form [formGroup]="formTemplate" autocomplete="off">
+        <div class="p-formgrid grid">
+            <div class="field col">
+                <label htmlFor="name2">Nombre de la Plantilla</label>
+                <p-dropdown [options]="templates" formControlName="selectedTemplate" optionLabel="label" [filter]="true"
+                    filterBy="label" [showClear]="true" placeholder="Seleccione una Plantilla de Correo">
+                </p-dropdown>
+            </div>
+            <div class="field col">
+                <label htmlFor="asunto">Asunto de Correo</label>
+                <input pInputText id="asunto" type="text" formControlName="subject" />
+            </div>
+        </div>
+
+
+        <div class="field col-12">
+            <!-- Toolbar de formato -->
+            <div class="custom-toolbar">
+                <p-button severity="help" (onClick)="exec('bold')">
+                    <ng-template pTemplate="help">
+                        <b>N</b>
+                    </ng-template>
+                </p-button>
+
+                <p-button severity="help" (onClick)="exec('italic')">
+                    <ng-template pTemplate="default">
+                        <i>K</i>
+                    </ng-template>
+                </p-button>
+
+                <p-button severity="help" (onClick)="exec('underline')">
+                    <ng-template pTemplate="default">
+                        <u>S</u>
+                    </ng-template>
+                </p-button>
+
+                <p-button severity="help" icon="pi pi-list" (onClick)="exec('insertUnorderedList')"></p-button>
+                <p-button severity="help" icon="pi pi-sort-numeric-down"
+                    (onClick)="exec('insertOrderedList')"></p-button>
+            </div>
+
+
+            <div class="editor-and-params">
+                <div #emailEditor class="custom-editor" contenteditable="true" (input)="onEditorInput($event)"
+                    dir="ltr">
+                </div>
+
+                <div class="param-toolbar">
+                    <button pButton severity="primary" *ngFor="let param of availableParameters" draggable="true"
+                        (dragstart)="onDragStart($event, param)" label="{{ param.parameterDescription }}">
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Botón Guardar -->
+        <p-confirmDialog header="Confirmar" key="confirmDialog" icon="pi pi-exclamation-triangle"
+            [style]="{ width: '350px' }">
+        </p-confirmDialog>
+        <div class="button-save-container">
+            <button pButton type="button" label="Actualizar" icon="pi pi-save" class="p-button-success"
+                [disabled]="!formTemplate.value.selectedTemplate" (click)="confirmSave()">
+            </button>
+        </div>
+        <p-toast></p-toast>
+    </form>
+</div>

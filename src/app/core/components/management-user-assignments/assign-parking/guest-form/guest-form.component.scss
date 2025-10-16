@@ -1,0 +1,37 @@
+
+//MULTISELECT TAGS
+/* Cambiar el tamaño del texto de los ítems del p-multiSelect */
+::ng-deep .p-multiselect-item {
+    font-size: 1rem; /* Ajusta el tamaño según tus necesidades */
+}
+
+/* Cambiar el tamaño del texto de los chips del p-multiSelect */
+::ng-deep .p-multiselect-token {
+    font-size: 1rem; /* Ajusta el tamaño según tus necesidades */
+    background-color:  #ff8300; /* Color de fondo del chip */
+    color: white; /* Color del texto del chip */
+}
+
+/* Aumentar el alto del contenedor del p-multiSelect */
+::ng-deep .p-multiselect {
+    height: 45px; /* Ajusta el valor según tus necesidades */
+    padding: 3px;
+}
+//END MULTISELECT
+
+//DROPDOWN
+/* Asegurar que el contenido del dropdown se ajuste a la nueva altura */
+::ng-deep .p-dropdown-label {
+    padding: 10px;
+    margin: 0;
+}
+//END DROPDOWN
+
+.p-20{
+    padding: 20px;
+}
+
+.text5{
+    text-align: center; 
+    color: tomato
+}

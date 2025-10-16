@@ -1,0 +1,80 @@
+<div class="card">
+    <h4>Nuevo Rol</h4>
+    <p-divider></p-divider>
+    <p>Crear nuevo rol con permisos</p>
+    <form [formGroup]="formRole" (ngSubmit)="onSubmit()" autocomplete="off">
+
+        <div class="flex flex-column md:flex-row">
+
+            <div class="w-full md:w-5 flex flex-column align-items-start justify-content-start gap-3 py-3">
+
+                <div class="flex flex-column align-items-start gap-2 w-full">
+
+                    <label for="name" class="w-5rem">Nombre*</label>
+                    <input pInputText id="name" type="text" class="w-full" formControlName="name" />
+                    <small class="text-danger"
+                        *ngIf="formRole.controls['name'].touched && formRole.controls['name'].hasError('required')">El
+                        nombre es requerido.</small>
+                    <small class="text-danger"
+                        *ngIf="formRole.controls['name'].touched && formRole.controls['name'].hasError('maxlength')">El
+                        nombre no puede exceder los 35 caracteres.</small>
+                </div>
+
+                <div class="flex flex-column align-items-start gap-2 w-full">
+                    <label for="estado" class="w-5rem">Estado*</label>
+                    <p-dropdown [options]="statusOptions" placeholder="Selecciona el Estado" class="w-full"
+                        formControlName="status" optionLabel="nameStatus" [showClear]="true" dataKey="nameStatus"
+                        emptyMessage="No hay estados disponibles"></p-dropdown>
+                    <small class="text-danger"
+                        *ngIf="formRole.controls['status'].touched && formRole.controls['status'].hasError('required')">El
+                        estado es requerido.</small>
+                </div>
+
+                <div class="flex flex-column align-items-start gap-2 w-full">
+                    <label for="description" class="w-5rem">Descripción</label>
+                    <textarea rows="5" cols="50" pInputTextarea class="w-full" formControlName="description"
+                        placeholder=" Ingresa una descripcion"></textarea>
+                    <small class="text-danger"
+                        *ngIf="formRole.controls['description'].touched && formRole.controls['description'].hasError('maxlength')">
+                        La descripción no puede exceder los 255 caracteres.
+                    </small>
+                </div>
+
+            </div>
+
+            <div class="w-full md:w-2">
+                <p-divider layout="vertical" styleClass="hidden md:flex"></p-divider>
+                <p-divider layout="horizontal" styleClass="flex md:hidden" [align]="'center'"></p-divider>
+            </div>
+
+            <div class="flex flex-column gap-2 justify-content-center">
+                <h5>Permisos</h5>
+                <div formArrayName="listOfAccess">
+                    <div *ngFor="let access of listOfAccess.controls; let i = index" [formGroupName]="i"
+                        class="field-checkbox">
+                        <p-checkbox [label]="access.get('slug').value" formControlName="canAccess"
+                            binary="true"></p-checkbox>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <br>
+        <br>
+        <div style="display: flex; justify-content: center;">
+            <p-button severity="success" (onClick)="confirm()" label="Guardar" icon="pi pi-check"
+                [ngStyle]="{'width': 'auto'}"></p-button>
+            <p-button (onClick)="confirm3()" label="Cancelar" severity="danger"
+                [ngStyle]="{'width': 'auto', 'margin-left': '10px'}" />
+        </div>
+    </form>
+
+    <p-confirmDialog key="confirm" header="Confirmación" icon="pi pi-exclamation-triangle" [style]="{ width: '350px' }"
+        rejectButtonStyleClass="p-button-text"></p-confirmDialog>
+
+    <p-confirmDialog key="confirm3" header="Confirmación" icon="pi pi-exclamation-triangle" [style]="{ width: '350px' }"
+        rejectButtonStyleClass="p-button-text"></p-confirmDialog>
+
+
+</div>
+<p-toast></p-toast>

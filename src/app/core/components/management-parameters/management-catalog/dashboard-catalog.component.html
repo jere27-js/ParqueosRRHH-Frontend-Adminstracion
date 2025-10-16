@@ -1,0 +1,179 @@
+<div class="card">
+
+    <div class="card menu-card">
+        <nav class="menu-bar">
+            <button *ngFor="let item of menuItems" (click)="loadData(item.key)"
+                [class.active]="selectedCategory === item.key">
+                <i class="{{ item.icon }}"></i> {{ item.label }}
+            </button>
+        </nav>
+    </div>
+    <br>
+    <div *ngIf="selectedCategory">
+        <div *ngIf="selectedCategory === 'vehicleType'">
+            <div class="p-inputgroup" style="margin-bottom: 20px;">
+                <button pButton label="Agregar Nuevo" icon="pi pi-plus" class="p-button-success"
+                    (click)="showDialog()"></button>
+            </div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+            <h4 class="category-title" style="margin: 0;">
+                {{ categoryNames[selectedCategory] || selectedCategory }}
+            </h4>
+
+            <div class="p-inputgroup" style="width: 250px;">
+                <span class="p-inputgroup-addon"><i class="pi pi-search"></i></span>
+                <input type="text" pInputText placeholder="Buscar..."
+                    (input)="table.filterGlobal($event.target.value, 'contains')" />
+            </div>
+        </div>
+
+        <!-- Tabla principal con paginación -->
+        <p-table #table [value]="dataList" [paginator]="true" [rows]="5" [rowsPerPageOptions]="[5,10,20]"
+            currentPageReportTemplate="Mostrando {last} de {totalRecords} registros" scrollHeight="450px"
+            [globalFilterFields]="['name', 'description']" [responsiveLayout]="'scroll'" [showCurrentPageReport]="true"
+            scrollable="true" [tableStyle]="{ 'min-width': '600px', width: '100%', 'table-layout': 'fixed' }">
+
+            <ng-template pTemplate="header">
+                <tr>
+                    <th style="width: 200px; min-width: 200px;">Nombre</th>
+                    <th style="width: 300px; min-width: 300px;">Descripción</th>
+                    <th style="width: 120px; min-width: 120px;">Disponible</th>
+                    <th style="width: 180px; min-width: 180px;">Acciones</th>
+                </tr>
+            </ng-template>
+
+            <ng-template pTemplate="body" let-item>
+                <tr>
+                    <td>
+                        <span class="truncate-text" [pTooltip]="item.name" tooltipPosition="top">{{ item.name }}</span>
+                    </td>
+                    <td>
+                        <span class="truncate-text" [pTooltip]="item.description" tooltipPosition="top">{{
+                            item.description }}</span>
+                    </td>
+                    <td>
+                        {{ item.isActive ? 'Sí' : 'No' }}
+                    </td>
+                    <td style="width:20%; min-width:20rem;">
+                        <button pButton icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2"
+                            (click)="!checkRestrictions(item, 'edit') && showDialog(item)"
+                            [disabled]="checkRestrictions(item, 'edit')"
+                            [pTooltip]="checkRestrictions(item, 'edit') ? 'Este ítem no se puede editar' : ''"
+                            tooltipPosition="top" aria-label="Editar elemento">
+                        </button>
+
+                        <button pButton icon="pi pi-trash" class="p-button-rounded p-button-warning"
+                            (click)="!checkRestrictions(item, 'delete') && confirmDeleteItem(item)"
+                            [disabled]="checkRestrictions(item, 'delete')"
+                            [pTooltip]="checkRestrictions(item, 'delete') ? 'Este ítem no se puede eliminar' : ''"
+                            tooltipPosition="top" aria-label="Eliminar elemento">
+                        </button>
+                    </td>
+
+                </tr>
+            </ng-template>
+        </p-table>
+
+
+
+        <p-dialog header="Confirmar Eliminación" [(visible)]="displayConfirmDialog" [modal]="true"
+            [style]="{width: '300px'}">
+            <p>¿Estás seguro de que deseas eliminar este ítem?<br>
+                <strong style="color: #DA291C;">⚠️ Esta acción es irreversible</strong>
+                y podría afectar otros procesos o flujos relacionados.
+            </p>
+
+            <p-footer>
+                <button pButton label="Cancelar" icon="pi pi-times" (click)="displayConfirmDialog = false"
+                    class="p-button-text"></button>
+                <button pButton label="Eliminar" icon="pi pi-check" (click)="deleteItemConfirmed()" autofocus></button>
+
+            </p-footer>
+        </p-dialog>
+    </div>
+
+</div>
+<p-toast></p-toast>
+<p-confirmDialog></p-confirmDialog>
+
+<!-- Cuadro de diálogo -->
+<p-dialog header="Formulario de {{ categoryNames[selectedCategory] || selectedCategory }}" [(visible)]="displayDialog"
+    [modal]="true" [style]="{ width: '60vw', height: '70vh' }"
+    [contentStyle]="{ 'max-height': '65vh', 'overflow-y': 'auto' }" class="custom-dialog">
+
+    <div class="p-fluid">
+        <div class="p-field">
+            <label for="name">Nombre*</label>
+            <input type="text" pInputText [(ngModel)]="newItem.name" id="name" required autocomplete="off" [ngClass]="{
+                  'p-invalid': (formSubmitted && (!newItem.name || newItem.name.trim() === ''))
+                               || (newItem.name && newItem.name.length > 50)
+                }" />
+            <small *ngIf="formSubmitted && (!newItem.name || newItem.name.trim() === '')" class="p-error">
+                El nombre es obligatorio.
+            </small>
+            <small *ngIf="newItem.name && newItem.name.length > 50" class="p-error">
+                El nombre no puede tener más de 50 caracteres.
+            </small>
+        </div>
+
+        <div class="p-field">
+            <label for="description">Descripción</label>
+            <textarea pInputTextarea [(ngModel)]="newItem.description" id="description" autocomplete="off" rows="5"
+                [ngClass]="{'p-invalid': newItem.description && newItem.description.length > 255}"></textarea>
+            <small *ngIf="newItem.description && newItem.description.length > 255" class="p-error">
+                La descripción no puede tener más de 255 caracteres.
+            </small>
+        </div>
+
+        <div *ngIf="selectedCategory === 'benefitType'" class="p-field label-checkbox">
+            <label>¿Requiere enviar documentos por correo?*</label>
+            <p-checkbox [(ngModel)]="newItem.sendDocument" [binary]="true"
+                [ngClass]="{'p-invalid': formSubmitted && (newItem.sendDocument === null || newItem.sendDocument === undefined)}"></p-checkbox>
+            <small *ngIf="formSubmitted && (newItem.sendDocument === null || newItem.sendDocument === undefined)"
+                class="p-error">
+                Este campo es obligatorio.
+            </small>
+        </div>
+
+        <div *ngIf="selectedCategory === 'benefitType'" class="p-field label-checkbox">
+            <label>¿Permite Monto?*</label>
+            <p-checkbox [(ngModel)]="newItem.allowAmount" [binary]="true"
+                [ngClass]="{'p-invalid': formSubmitted && (newItem.allowAmount === null || newItem.allowAmount === undefined)}"></p-checkbox>
+            <small *ngIf="formSubmitted && (newItem.allowAmount === null || newItem.allowAmount === undefined)"
+                class="p-error">
+                Este campo es obligatorio.
+            </small>
+        </div>
+
+        <div *ngIf="selectedCategory === 'slotType'" class="p-field label-checkbox">
+            <label>¿Espacio Múltiple?*</label>
+            <p-checkbox [(ngModel)]="newItem.allowParallelAssignments" [binary]="true"
+                [ngClass]="{'p-invalid': formSubmitted && (newItem.allowParallelAssignments === null || newItem.allowParallelAssignments === undefined)}"></p-checkbox>
+            <small
+                *ngIf="formSubmitted && (newItem.allowParallelAssignments === null || newItem.allowParallelAssignments === undefined)"
+                class="p-error">
+                Este campo es obligatorio.
+            </small>
+        </div>
+
+        <div class="p-field label-checkbox" *ngIf="selectedCategory === 'vehicleType'">
+            <label class="p-mr-5">
+                ¿Mostrar este {{ categoryNames[selectedCategory] }} como disponible para su selección en otras
+                pantallas?
+            </label>
+            <p-checkbox [(ngModel)]="newItem.isActive" [binary]="true"
+                [ngClass]="{'p-invalid': formSubmitted && !newItem.isActive}"></p-checkbox>
+        </div>
+
+    </div>
+    <p-footer>
+        <div class="flex justify-content-center">
+            <button pButton label="Guardar" icon="pi pi-check" (click)="confirmSaveItem()"
+                class="p-button-success"></button>
+            <button pButton label="Cancelar" icon="pi pi-times" (click)="confirmCancel()"
+                class="p-button-danger"></button>
+        </div>
+    </p-footer>
+</p-dialog>

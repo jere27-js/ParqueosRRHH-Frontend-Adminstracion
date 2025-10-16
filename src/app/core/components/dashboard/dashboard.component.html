@@ -1,0 +1,82 @@
+    <div class="grid">
+
+        <div class="col-12 md:col-6 lg:col-6 xl:col-2">
+            <div class="card mb-0">
+                <div class="flex justify-content-between mb-1">
+                    <div>
+                        <h6 class="block  mb-3">Total de Espacios</h6>
+                        <div class="text-900 font-medium text-xl">{{ overviewData.totalSlots }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 md:col-6 lg:col-6 xl:col-2">
+            <div class="card mb-0">
+                <div class="flex justify-content-between mb-1">
+                    <div>
+                        <h6 class="block  mb-3">Espacios Ocupados</h6>
+                        <div class="text-900 font-medium text-xl">{{ overviewData.occupiedSlots }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 md:col-6 lg:col-6 xl:col-2">
+            <div class="card mb-0">
+                <div class="flex justify-content-between mb-1">
+                    <div>
+                        <h6 class="block mb-3">Espacios Disponibles</h6>
+                        <div class="text-900 font-medium text-xl">{{ overviewData.availableSlots }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 md:col-6 lg:col-6 xl:col-3">
+            <div class="card mb-0">
+                <div class="flex justify-content-between mb-1">
+                    <div>
+                        <h6 class="block mb-3">Espacios No Disponibles</h6>
+                        <div class="text-900 font-medium text-xl">{{ overviewData.unavailableSlots }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 md:col-6 lg:col-6 xl:col-3">
+            <div class="card mb-0">
+                <div class="flex justify-content-between mb-1">
+                    <div>
+                        <h6 class="block mb-3">Porcentaje de Ocupación</h6>
+                        <div class="text-900 font-medium text-xl">{{ ((overviewData.occupiedSlots / overviewData.totalSlots)*100).toFixed(2) }}% </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+<!--GRAFICAS-->
+        <div class="col-12 xl:col-6">
+            <div class="card">
+                <h5>Disponibilidad de Espacios por Mes</h5>
+                <app-line-bar></app-line-bar>
+            </div>
+        </div>
+
+
+        <div class="col-12 xl:col-6">
+            <div class="card">
+                <h5>Colaboradores por Espacios</h5>
+                <app-vertical-bar></app-vertical-bar>
+            </div>
+        </div>
+
+<!--TABLA-->
+        <div class="col-12 xl:col-12">
+            <div class="card">
+                <app-table-paginator></app-table-paginator>
+            </div>
+        </div>
+
+</div>
+

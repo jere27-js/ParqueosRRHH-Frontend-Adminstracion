@@ -1,0 +1,62 @@
+<div class="card">
+    <h4>Editar Grupo</h4>
+</div>
+
+<div class="card">
+    <form [formGroup]="formTag" autocomplete="off">
+        <div class="flex flex-column md:flex-row">
+            <div class="w-full md:w-6 flex flex-column align-items-start justify-content-start gap-3 py-3">
+                <div class="flex flex-column align-items-start gap-2 w-full">
+                    <label for="name" class="w-5rem">Nombre*</label>
+                    <input pInputText id="name" type="text" class="w-full" formControlName="name" />
+                    <small class="text-danger"
+                        *ngIf=" formTag.controls['name'].touched && formTag.controls['name'].hasError('required') ">
+                        El nombre es requerido.
+                    </small>
+                    <small class="text-danger"
+                        *ngIf=" formTag.controls['name'].touched && formTag.controls['name'].hasError('maxlength')">
+                        El nombre no puede exceder los 35 caracteres.
+                    </small>
+                </div>
+
+                <div class="flex flex-column align-items-start gap-2 w-full">
+                    <label for="estado" class="w-5rem">Estado*</label>
+                    <p-dropdown [options]="statusOptions" placeholder="Selecciona el Estado" class="w-full"
+                        formControlName="status" optionLabel="nameStatus" optionValue="nameStatus" [showClear]="true"
+                        emptyMessage="No hay estados disponibles">
+                    </p-dropdown>
+                    <small class="text-danger"
+                        *ngIf=" formTag.controls['status'].touched && formTag.controls['status'].hasError('required')">
+                        El estado es requerido.
+                    </small>
+                </div>
+
+                <div class="flex flex-column align-items-start gap-2 w-full">
+                    <label for="description" class="w-5rem">Descripción</label>
+                    <textarea rows="5" cols="50" pInputTextarea class="w-full" formControlName="description"
+                        placeholder="Ingresa una descripción de tu grupo">
+                    </textarea>
+                    <small class="text-danger"
+                        *ngIf=" formTag.controls['description'].touched && formTag.controls['description'].hasError('maxlength') ">
+                        La descripción no puede exceder los 255 caracteres.
+                    </small>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div style="display: flex; justify-content: center; gap: 10px; margin-top: 20px">
+        <button type="button" (click)="confirmUpdate()" pButton icon="pi pi-check" label="Actualizar"
+            class="p-button-success" [disabled]="formTag.invalid"></button>
+        <button type="button" (click)="confirmCancel()" pButton icon="pi pi-times" label="Cancelar"
+            class="p-button-danger"></button>
+    </div>
+
+    <!-- Diálogos de confirmación -->
+    <p-confirmDialog header="Confirmar" key="confirm" icon="pi pi-exclamation-triangle" [style]="{ width: '350px' }">
+    </p-confirmDialog>
+
+    <p-confirmDialog header="Confirmar" key="cancel" icon="pi pi-exclamation-triangle" [style]="{ width: '350px' }">
+    </p-confirmDialog>
+</div>
+<p-toast></p-toast>

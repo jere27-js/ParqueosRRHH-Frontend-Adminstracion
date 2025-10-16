@@ -1,0 +1,391 @@
+<div class="card">
+    <h4>Seleccione un Reporte</h4>
+    <!-- Selector de Reporte -->
+    <div class="report-selector-container">
+        <div class="report-selector">
+            <p-dropdown [options]="reportOptions" [(ngModel)]="selectedReport" placeholder="Seleccionar Reporte"
+                [showClear]="true" (onChange)="fetchReport(selectedReport)">
+            </p-dropdown>
+        </div>
+    </div>
+
+    <!-- Reporte 1: Resumen por Ubicación -->
+    <div *ngIf="selectedReport === 1">
+        <p-table  #dt1 id="htmlData1" [columns]="cols" responsiveLayout="scroll" [rows]="5" [rowsPerPageOptions]="[5,10,20,50,100]"
+            [showCurrentPageReport]="true"
+            currentPageReportTemplate="Mostrando {last} Registros"
+            [value]="reportData" [paginator]="true"
+            [globalFilterFields]="['parkingName', 'numberOfIdentifier', 'noCost', 'reimbursement', 'discount', 'vehicleCount', 'motorcycleCount', 'truckCount', 'totalSpaces', 'occupiedSpaces', 'availableSpaces', 'occupancyRate']"
+            [rowHover]="true"
+            scrollable="true"
+            scrollHeight="450px"
+            >
+
+            <ng-template pTemplate="caption">
+                <div style="text-align: left">
+                    <!--
+                    <p-button
+                        class="pr-4"
+                        severity="success"
+                        icon="pi pi-external-link"
+                        label="Exportar Tabla a Excel"
+                        (onClick)="exportTable('htmlData1','Resumen por Ubicación Tabla')" />
+                    -->
+                        <p-button
+                        severity="success"
+                        icon="pi pi-external-link"
+                        label="Exportar a Excel"
+                        (onClick)="exporlocationReport('Resumen por Ubicación Datos')" />
+                </div>
+
+
+                <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+                    <h5 class="m-0">Resumen por Ubicación</h5>
+                    <span class="block mt-2 md:mt-0 p-input-icon-left">
+                        <i class="pi pi-search"></i>
+                        <input pInputText type="text" (input)="onGlobalFilter(dt1, $event)" placeholder="Buscar..."
+                            class="w-full sm:w-auto" />
+                    </span>
+                </div>
+            </ng-template>
+
+            <ng-template pTemplate="header">
+                <tr>
+                    <th pSortableColumn="parkingName">Nombre de Parqueo <p-sortIcon field="parkingName"></p-sortIcon></th>
+                    <th pSortableColumn="numberOfIdentifier">No. Voluntaria <p-sortIcon field="numberOfIdentifier"></p-sortIcon></th>
+                    <th pSortableColumn="noCost">Espacios sin Costo <p-sortIcon field="noCost"></p-sortIcon></th>
+                    <th pSortableColumn="reimbursement">Espacios con Reembolso <p-sortIcon field="reimbursement"></p-sortIcon></th>
+                    <th pSortableColumn="discount">Espacios con Descuento <p-sortIcon field="discount"></p-sortIcon></th>
+                    <th pSortableColumn="vehicleCount">Espacios para Carros <p-sortIcon field="vehicleCount"></p-sortIcon></th>
+                    <th pSortableColumn="motorcycleCount">Espacios para Motos <p-sortIcon field="motorcycleCount"></p-sortIcon></th>
+                    <th pSortableColumn="truckCount">Espacios para Camiones <p-sortIcon field="truckCount"></p-sortIcon></th>
+                    <th pSortableColumn="totalSpaces">Espacios Totales <p-sortIcon field="totalSpaces"></p-sortIcon></th>
+                    <th pSortableColumn="occupiedSpaces">Espacios Ocupados <p-sortIcon field="occupiedSpaces"></p-sortIcon></th>
+                    <th pSortableColumn="availableSpaces">Espacios Disponibles <p-sortIcon field="availableSpaces"></p-sortIcon></th>
+                    <th pSortableColumn="occupancyRate">Índice de Ocupación (%) <p-sortIcon field="occupancyRate"></p-sortIcon></th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-item>
+                <tr>
+                    <td>{{ item.parkingName }}</td>
+                    <td>{{ item.numberOfIdentifier }}</td>
+                    <td>{{ item.noCost }}</td>
+                    <td>{{ item.reimbursement }}</td>
+                    <td>{{ item.discount }}</td>
+                    <td>{{ item.vehicleCount }}</td>
+                    <td>{{ item.motorcycleCount }}</td>
+                    <td>{{ item.truckCount }}</td>
+                    <td>{{ item.totalSpaces }}</td>
+                    <td>{{ item.occupiedSpaces }}</td>
+                    <td>{{ item.availableSpaces }}</td>
+                    <td>{{ item.occupancyRate }} %</td>
+                </tr>
+            </ng-template>
+             <ng-template pTemplate="summary">
+                <div class="flex align-items-center justify-content-between">
+                    Total de Registros: {{ reportData ? reportData.length : 0 }}
+                </div>
+             </ng-template>
+        </p-table>
+    </div>
+
+    <!-- Reporte 2: Detalle por Colaborador -->
+    <div *ngIf="selectedReport === 2">
+        <p-table #dt2 id="htmlData2" [columns]="cols" responsiveLayout="scroll" [rows]="5" [rowsPerPageOptions]="[5,10,20,50,100]"
+            [showCurrentPageReport]="true"
+            currentPageReportTemplate="Mostrando {last} Registros"
+            [value]="filteredData" [paginator]="true"
+            [globalFilterFields]="['employeeCode', 'employeeName', 'position', 'department', 'subManagement', 'management1', 'management2', 'address', 'work_site', 'assignment.slot.location.parkingName', 'assignment.slot.benefitType', 'assignment.assignmentDate', 'assignment.de_assignment.endDate']"
+            [rowHover]="true"
+            scrollable="true"
+            scrollHeight="450px"
+            >
+
+            <ng-template pTemplate="caption">
+
+                <div style="text-align: left">
+                        <p-button
+                        severity="success"
+                        icon="pi pi-external-link"
+                        label="Exportar a Excel"
+                        (onClick)="exportReport2('Detalle por Colaborador')" />
+                </div>
+
+                <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+                    <h5 class="m-0">Detalle por Colaborador</h5>
+                    <span class="block mt-2 md:mt-0 p-input-icon-left">
+                        <i class="pi pi-search"></i>
+                        <input pInputText type="text" (input)="onGlobalFilter(dt2, $event)" placeholder="Buscar..."
+                            class="w-full sm:w-auto" />
+                    </span>
+                </div>
+
+                <div class="filter-container flex flex-column md:flex-row md:align-items-center mb-3">
+                    <!-- Filtro por Departamento -->
+                    <div class="p-field mr-2">
+                        <label for="departmentFilter">Departamento</label>
+                        <p-dropdown [options]="departments" [(ngModel)]="selectedDepartment"
+                            placeholder="Seleccionar Departamento" (onChange)="filterReportData()" [showClear]="true">
+                        </p-dropdown>
+                    </div>
+
+                    <!-- Filtro por Puesto -->
+                    <div class="p-field">
+                        <label for="positionFilter">Puesto</label>
+                        <p-dropdown [options]="positions" [(ngModel)]="selectedPosition" placeholder="Seleccionar Puesto"
+                            (onChange)="filterReportData()" [showClear]="true">
+                        </p-dropdown>
+                    </div>
+                </div>
+            </ng-template>
+
+            <ng-template pTemplate="header">
+                <tr>
+                    <th pSortableColumn="employeeCode">Código de Colaborador <p-sortIcon field="employeeCode"></p-sortIcon></th>
+                    <th pSortableColumn="employeeName">Nombre Colaborador <p-sortIcon field="employeeName"></p-sortIcon></th>
+                    <th pSortableColumn="position">Puesto Colaborador <p-sortIcon field="position"></p-sortIcon></th>
+                    <th pSortableColumn="department">Departamento <p-sortIcon field="department"></p-sortIcon></th>
+                    <th pSortableColumn="subManagement">Subgerencia <p-sortIcon field="subManagement"></p-sortIcon></th>
+                    <th pSortableColumn="management1">Gerencia 1 <p-sortIcon field="management1"></p-sortIcon></th>
+                    <th pSortableColumn="management2">Gerencia 2 <p-sortIcon field="management2"></p-sortIcon></th>
+                    <th pSortableColumn="address">Dirección <p-sortIcon field="address"></p-sortIcon></th>
+                    <th pSortableColumn="work_site">Sede <p-sortIcon field="work_site"></p-sortIcon></th>
+                    <th pSortableColumn="assignment.slot.location.parkingName">Nombre de Parqueo <p-sortIcon field="assignment.slot.location.parkingName"></p-sortIcon></th>
+                    <th pSortableColumn="assignment.slot.benefitType">Tipo de Beneficio <p-sortIcon field="assignment.slot.benefitType"></p-sortIcon></th>
+                    <th pSortableColumn="assignment.assignmentDate">Fecha de Asignación <p-sortIcon field="assignment.assignmentDate"></p-sortIcon></th>
+                    <th pSortableColumn="assignment.de_assignment.endDate">Fecha de Baja <p-sortIcon field="assignment.de_assignment.endDate"></p-sortIcon></th>
+                </tr>
+            </ng-template>
+
+            <ng-template pTemplate="body" let-item>
+                <tr>
+                    <td>{{ item.employeeCode }}</td>
+                    <td>{{ item.employeeName }}</td>
+                    <td>{{ item.position }}</td>
+                    <td>{{ item.department }}</td>
+                    <td>{{ item.subManagement }}</td>
+                    <td>{{ item.management1 }}</td>
+                    <td>{{ item.management2 }}</td>
+                    <td>{{ item.address }}</td>
+                    <td>{{ item.work_site }}</td>
+                    <td>{{ item.assignment.slot.location.parkingName }}</td>
+                    <td>
+                        {{ item.assignment.slot.benefitType === 'SIN_COSTO' ? 'SIN COSTO' : item.assignment.slot.benefitType }}
+                    </td>
+                    <td>{{ item.assignment.assignmentDate | date:'dd/MM/yyyy' }}</td>
+                    <td>
+                        <span *ngIf="item.assignment.de_assignment">
+                            {{ item.assignment.de_assignment.endDate | date:'dd/MM/yyyy' }}
+                        </span>
+                        <span *ngIf="!item.assignment.de_assignment">
+                            - - - -
+                        </span>
+                    </td>
+                </tr>
+            </ng-template>
+              <ng-template pTemplate="summary">
+                <div class="flex align-items-center justify-content-between">
+                    Total de Registros: {{ filteredData ? filteredData.length : 0 }}
+                </div>
+             </ng-template>
+        </p-table>
+    </div>
+
+    <!-- Reporte 3: Detalle por Colaborador con Costo -->
+    <div *ngIf="selectedReport === 3">
+        <p-table  #dt3 id="htmlData3" [columns]="cols" responsiveLayout="scroll" [rows]="5" [rowsPerPageOptions]="[5,10,20,50,100]"
+            [showCurrentPageReport]="true"
+            currentPageReportTemplate="Mostrando {last} Registros"
+            [value]="filteredData" [paginator]="true"
+            [globalFilterFields]="['employeeCode', 'employeeName', 'position', 'department', 'subManagement', 'management1', 'management2', 'address', 'site', 'assignment.slot.location.parkingName', 'assignment.slot.location.volunteerNumber', 'assignment.benefitType', 'assignment.assignmentDate', 'refundAmount','discountAmount']"
+            [rowHover]="true"
+            scrollable="true"
+            scrollHeight="450px"
+            >
+
+            <ng-template pTemplate="caption">
+                <div style="text-align: left">  
+                    <p-button
+                    severity="success"
+                    icon="pi pi-external-link"
+                    label="Exportar a Excel"
+                    (onClick)="exportReport3('Detalle por Colaborador')" />
+                </div>
+                <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+                    <h5 class="m-0">Detalle por colaborador con costo</h5>
+                    <span class="block mt-2 md:mt-0 p-input-icon-left">
+                        <i class="pi pi-search"></i>
+                        <input pInputText type="text" (input)="onGlobalFilter(dt3, $event)" placeholder="Buscar..."
+                            class="w-full sm:w-auto" />
+                    </span>
+                </div>
+
+                <div class="filter-container flex flex-column md:flex-row md:align-items-center mb-3">
+                    <!-- Filtro por Departamento -->
+                    <div class="p-field mr-2">
+                        <label for="departmentFilter">Departamento</label>
+                        <p-dropdown [options]="departments3" [(ngModel)]="selectedDepartment"
+                            placeholder="Seleccionar Departamento" (onChange)="filterReportData()" [showClear]="true">
+                        </p-dropdown>
+                    </div>
+
+                    <!-- Filtro por Puesto -->
+                    <div class="p-field mr-2 ">
+                        <label for="positionFilter">Puesto</label>
+                        <p-dropdown [options]="positions3" [(ngModel)]="selectedPosition" placeholder="Seleccionar Puesto"
+                            (onChange)="filterReportData()" [showClear]="true">
+                        </p-dropdown>
+                    </div>
+
+                     <!-- Filtro por dirección -->
+                     <div class="p-field mr-2">
+                        <label for="positionFilter">Dirección</label>
+                        <p-dropdown [options]="address3" [(ngModel)]="selectedAddress" placeholder="Seleccionar Dirección"
+                            (onChange)="filterReportData()" [showClear]="true">
+                        </p-dropdown>
+                    </div>
+
+                     <!-- Filtro por Tipo de Beneficio -->
+                     <div class="p-field mr-2">
+                        <label for="positionFilter">Beneficio</label>
+                        <p-dropdown [options]="benefit" [(ngModel)]="selectedBenefit" placeholder="Seleccionar Beneficio"
+                            (onChange)="filterReportData()" [showClear]="true">
+                        </p-dropdown>
+                    </div>
+                </div>
+
+            </ng-template>
+
+            <ng-template pTemplate="header">
+                <tr>
+                    <th pSortableColumn="employeeCode">Código de Colaborador <p-sortIcon field="employeeCode"></p-sortIcon></th>
+                    <th pSortableColumn="employeeName">Nombre Colaborador <p-sortIcon field="employeeName"></p-sortIcon></th>
+                    <th pSortableColumn="position">Puesto Colaborador <p-sortIcon field="position"></p-sortIcon></th>
+                    <th pSortableColumn="department">Departamento <p-sortIcon field="department"></p-sortIcon></th>
+                    <th pSortableColumn="subManagement">SubGerencia <p-sortIcon field="subManagement"></p-sortIcon></th>
+                    <th pSortableColumn="management1">Gerencia 1 <p-sortIcon field="management1"></p-sortIcon></th>
+                    <th pSortableColumn="management2">Gerencia 2 <p-sortIcon field="management2"></p-sortIcon></th>
+                    <th pSortableColumn="address">Dirección <p-sortIcon field="address"></p-sortIcon></th>
+                    <th pSortableColumn="site">Sede <p-sortIcon field="site"></p-sortIcon></th>
+                    <th pSortableColumn="assignment.slot.location.parkingName">Nombre del Parqueo <p-sortIcon field="assignment.slot.location.parkingName"></p-sortIcon></th>
+                    <th pSortableColumn="assignment.slot.location.volunteerNumber">Número de voluntaria <p-sortIcon field="assignment.slot.location.volunteerNumber"></p-sortIcon></th>
+                    <th pSortableColumn="assignment.benefitType">Tipo de Beneficio <p-sortIcon field="assignment.benefitType"></p-sortIcon></th>
+                    <th pSortableColumn="assignment.assignmentDate">Fecha de asignación <p-sortIcon field="assignment.assignmentDate"></p-sortIcon></th>
+                    <th pSortableColumn="refundAmount">Monto del Reembolso <p-sortIcon field="refundAmount"></p-sortIcon></th>
+                    <th pSortableColumn="discountAmount">Monto de descuento <p-sortIcon field="discountAmount"></p-sortIcon></th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-item>
+                <tr>
+                    <td>{{ item.employeeCode }}</td>
+                    <td>{{ item.employeeName }}</td>
+                    <td>{{ item.position }}</td>
+                    <td>{{ item.department }}</td>
+                    <td>{{ item.subManagement }}</td>
+                    <td>{{ item.management1 }}</td>
+                    <td>{{ item.management2 }}</td>
+                    <td>{{ item.address }}</td>
+                    <td>{{ item.site }}</td>
+                    <td>{{ item.assignment.slot.location.parkingName }}</td>
+                    <td>{{ item.assignment.slot.location.volunteerNumber  }}</td>
+                    <td>{{ item.assignment.benefitType }}</td>
+                    <td>{{ item.assignment.assignmentDate | date:'dd/MM/yyyy' }}</td>
+                    <td>{{ item.refundAmount }}</td>
+                    <td>{{ item.discountAmount }}</td>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="summary">
+                <div class="flex align-items-center justify-content-between">
+                    Total de Registros: {{ filteredData ? filteredData.length : 0 }}
+                </div>
+             </ng-template>
+        </p-table>
+    </div>
+
+<!-- Reporte 4: Parqueos asignados por periodo de tiempo determinado -->
+<div *ngIf="selectedReport === 4" >
+    <div class="flex pb-4 ">
+        <div class="pr-5">
+            <label class="pr-2"  for="startDate">Fecha de Inicio</label>
+            <p-calendar [(ngModel)]="startDate" dateFormat="dd/mm/yy" />
+        </div>
+        <div class="pr-5">
+            <label class="pr-2" for="endDate">Fecha de Fin</label>
+            <p-calendar [(ngModel)]="endDate" dateFormat="dd/mm/yy"  />
+        </div>
+        <div>
+            <p-button label="Filtrar" icon="pi pi-check" [loading]="loading"  (onClick)="load()" severity="info" />
+        </div>
+    </div>
+
+    <div *ngIf="PeriodReport && filteredData">
+        <p-table *ngIf="reportData"  #dt4 id="htmlData4" [columns]="cols" responsiveLayout="scroll" [rows]="5" [rowsPerPageOptions]="[5,10,20,50,100]"
+            [showCurrentPageReport]="true"
+            currentPageReportTemplate="Mostrando {last} Registros"
+            [value]="filteredData" [paginator]="true"
+            [globalFilterFields]="['employeeCode', 'employeeName', 'position', 'department', 'management1', 'assignment.slot.location.parkingName', 'assignment.slot.parkingCarNumber', 'assignment.assignmentDate' ]"
+            [rowHover]="true"
+            scrollable="true"
+            scrollHeight="450px"
+            >
+            
+
+            <ng-template pTemplate="caption">
+                <div style="text-align: left">
+    
+                <p-button
+                severity="success"
+                icon="pi pi-external-link"
+                label="Exportar a Excel"
+                (onClick)="exportReport4('Parqueos Asignados por Periodo de Tiempo Determinado')" />
+
+                </div>
+                <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+                    <h5 class="m-0">Parqueos Asignados por Periodo de Tiempo Determinado</h5>
+                    <span class="block mt-2 md:mt-0 p-input-icon-left">
+                        <i class="pi pi-search"></i>
+                        <input pInputText type="text" (input)="onGlobalFilter(dt4, $event)" placeholder="Buscar..."
+                            class="w-full sm:w-auto" />
+                    </span>
+                </div>
+
+            </ng-template>
+
+            <ng-template pTemplate="header">
+                <tr>
+                    <th [hidden]="true"> Fecha de inicio </th>
+                    <th [hidden]="true"> Fecha de fin </th>
+                    <th pSortableColumn="employeeCode">Código de Colaborador <p-sortIcon field="employeeCode"></p-sortIcon></th>
+                    <th pSortableColumn="employeeName">Nombre Colaborador <p-sortIcon field="employeeName"></p-sortIcon></th>
+                    <th pSortableColumn="position">Puesto Colaborador <p-sortIcon field="position"></p-sortIcon></th>
+                    <th pSortableColumn="department">Departamento <p-sortIcon field="department"></p-sortIcon></th>
+                    <th pSortableColumn="management1">Gerencia 1 <p-sortIcon field="management1"></p-sortIcon></th>
+                    <th pSortableColumn="assignment.slot.location.parkingName">Nombre del Parqueo <p-sortIcon field="assignment.slot.location.parkingName"></p-sortIcon></th>
+                    <th pSortableColumn="assignment.slot.parkingCarNumber">Número de Parqueo <p-sortIcon field="assignment.slot.parkingCarNumber"></p-sortIcon></th>
+                    <th pSortableColumn="assignment.assignmentDate">Fecha de Asignación <p-sortIcon field="assignment.assignmentDate"></p-sortIcon></th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-item>
+                <tr>
+                    <td [hidden]="true"> {{startDate | date:'dd/MM/yyyy'  }} </td>
+                    <td [hidden]="true"> {{endDate | date:'dd/MM/yyyy'  }} </td>
+                    <td>{{ item.employeeCode }}</td>
+                    <td>{{ item.employeeName }}</td>
+                    <td>{{ item.position }}</td>
+                    <td>{{ item.department }}</td>
+                    <td>{{ item.management1 }}</td>
+                    <td>{{ item.assignment?.slot?.location?.parkingName }}</td>
+                    <td>{{ item.assignment?.slot?.parkingCarNumber }}</td>
+                    <td>{{ item.assignment.assignmentDate | date:'dd/MM/yyyy' }} </td>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="summary">
+                <div class="flex align-items-center justify-content-between">
+                    Total de Registros: {{ filteredData ? filteredData.length : 0 }}
+                </div>
+             </ng-template>
+        </p-table>
+    </div>
+</div>
+
+</div>

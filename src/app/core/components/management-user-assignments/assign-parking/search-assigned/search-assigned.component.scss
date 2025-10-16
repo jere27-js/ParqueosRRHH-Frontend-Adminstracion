@@ -1,0 +1,48 @@
+.button-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px; /* Espacio entre los botones */
+}
+
+.custom-button {
+    flex: 1 1 auto; /* Hace que los botones se expandan y se ajusten al contenedor */
+    min-width: 120px; /* Ajusta el ancho mínimo de los botones */
+    text-align: center; /* Centra el texto dentro del botón */
+    font-size: 12px; /* Tamaño de fuente más pequeño */
+}
+.btn-azul-atlas{
+    background-color: #0097A9;
+}
+
+.pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+  }
+
+:host ::ng-deep .p-dialog .product-image {
+    width: 150px;
+    margin: 0 auto 2rem auto;
+    display: block; }
+.pb-5{
+    padding-bottom: 5px;
+
+}
+.custom-margin {
+    margin-top: 50px; /* Ajusta el valor según tus necesidades */
+    margin-bottom: 50px; /* Ajusta el valor según tus necesidades */
+}
+
+.p-inputgroup {
+    margin-bottom: 1em;
+  }
+
+
+/* Ancho fijo para pantallas mayores a 425px */
+@media screen and (min-width: 426px) {
+    .custom-button {
+        width: 180px;
+        flex: 0 0 auto; /* Evita que se expanda más allá del ancho fijo */
+    }
+}

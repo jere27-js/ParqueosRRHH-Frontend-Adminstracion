@@ -1,0 +1,90 @@
+
+ //my card
+  .card {
+    width: 300px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+    margin: 0%;
+    padding: 15px;
+}
+
+.card-content {
+    padding: 2px;
+    margin: 0%;
+}
+.card-title {
+    font-size: 1.2em;
+    margin: 0%;
+}
+.card-description {
+    font-size: 1em;
+    color: #555;
+}
+.green-card {
+    background-color: #fffce0  !important;
+  }
+  //panel
+  .pt-5{
+    padding-top: 5px;
+  }
+  .pb-5{
+    padding-bottom: 5px;
+  }
+  .pl-5{
+    padding-left: 15px;
+  }
+  .pr-5{
+    padding-right: 5px;
+  }
+
+ //button trash
+ .bt {
+    display: flex;
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Centra verticalmente */
+    height: 100%; /* Asegura que el div tenga altura completa */
+    margin-top: 17px;
+}
+
+//MULTISELECT TAGS
+/* Cambiar el tamaño del texto de los ítems del p-multiSelect */
+::ng-deep .p-multiselect-item {
+    font-size: 1rem; /* Ajusta el tamaño según tus necesidades */
+}
+
+/* Cambiar el tamaño del texto de los chips del p-multiSelect */
+::ng-deep .p-multiselect-token {
+    font-size: 1rem; /* Ajusta el tamaño según tus necesidades */
+    background-color:  #ff8300; /* Color de fondo del chip */
+    color: white; /* Color del texto del chip */
+}
+
+/* Aumentar el alto del contenedor del p-multiSelect */
+::ng-deep .p-multiselect {
+    height: 45px; /* Ajusta el valor según tus necesidades */
+    padding: 3px;
+}
+//END MULTISELECT
+
+//DROPDOWN
+/* Asegurar que el contenido del dropdown se ajuste a la nueva altura */
+::ng-deep .p-dropdown-label {
+    padding: 10px;
+    margin: 0;
+}
+//END DROPDOWN
+
+.left-title{
+  background-color: #F9FAFB; 
+  padding: 10px; 
+  border: 1px solid #e5e7eb; 
+}
+
+
+
+.pt-15{
+  padding-top: 15px;
+}

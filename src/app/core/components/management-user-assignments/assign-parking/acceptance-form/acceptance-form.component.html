@@ -1,0 +1,736 @@
+
+<p-toast></p-toast>
+<p-confirmDialog />
+<p-card>
+<h4 class="p-4">Formulario para Asignación de Parqueos</h4>
+<p-stepper *ngIf="assignmentData" >
+<!--PASO 1-->
+        <p-stepperPanel header="Datos de quien solicita">
+            <ng-template pTemplate="content" let-nextCallback="nextCallback" let-index="index">
+                <div>
+                    <div class="border-2 p-2  surface-border border-round claro-g-100 ">
+
+                        <div class="grid">
+                            <div class="col-12 xl:col-12">
+                                <h5>Jefatura de Seguridad Operativa Claro</h5>
+                            </div>
+                        </div>
+
+                        <div class="grid">
+                            <div class="col-12 xl:col-3 ">
+                                <label for="">Número de solicitud</label> <br>
+                                <input
+                                    class="full-width"
+                                    pInputText
+                                    value= "{{ numSolicitud }}"
+                                    readonly
+                                />
+                            </div>
+                            <div class="col-12 xl:col-3 ">
+                                <label for="">Fecha</label> <br>
+                                <input
+                                class="full-width"
+                                type="text"
+                                pInputText
+                                [(ngModel)]="today2"
+                                readonly
+                            />
+                            </div>
+                            <div class="col-12 xl:col-3">
+                                <label for="">Nombre del Parqueo</label> <br>
+                                <input
+                                    class="full-width"
+                                    type="text"
+                                    pInputText
+                                    value= "{{ assignmentData.data.location.name }}"
+                                    readonly
+                                />
+                            </div>
+                        </div>
+
+                        <div class="grid">
+                            <div class="col-12 xl:col-12">
+                                <h5>Datos de quien solicita la asignación (Jefe de area)</h5>
+                            </div>
+                        </div>
+                        <div class="grid">
+                            <div class="col-12 xl:col-3">
+                                <label for="">Nombre</label> <br>
+                                <input
+                                    class="full-width"
+                                    type="text"
+                                    pInputText
+                                    tooltipPosition="right"
+                                    value= "{{ assignmentData.data.headOfEmployee.name }}"
+                                    readonly
+                                />
+                            </div>
+                            <div class="col-12 xl:col-3">
+                                <label for="">Telefono</label> <br>
+                                <input
+                                    class="full-width"
+                                    type="text"
+                                    pInputText
+                                    tooltipPosition="right"
+                                    value= "{{ assignmentData.data.headOfEmployee.phone }}"
+                                    readonly
+                                />
+                            </div>
+
+                            <div class="col-12 xl:col-3">
+                                <label for="">Código del colaborador</label> <br>
+                                <input
+                                    class="full-width"
+                                    type="text"
+                                    pInputText
+                                    tooltipPosition="right"
+                                    value= "{{ assignmentData.data.headOfEmployee.employeeCode }}"
+                                    readonly
+                                />
+                            </div>
+                        </div>
+                        <div class="grid">
+                            <div class="col-12 xl:col-3">
+                                <label for="">Correo</label> <br>
+                                <input
+                                class="full-width"
+                                    type="text"
+                                    pInputText
+                                    tooltipPosition="right"
+                                    value= "{{ assignmentData.data.headOfEmployee.email }}"
+                                    readonly
+                                />
+                            </div>
+
+                            <div class="col-12 xl:col-3">
+                                <label for="">Puesto</label> <br>
+                                <input
+                                class="full-width"
+                                    type="text"
+                                    pInputText
+                                    tooltipPosition="right"
+                                    value= "{{ assignmentData.data.currAssignment.employee.bossWorkplace }}"
+                                    readonly
+                                />
+                            </div>
+                            <div class="col-12 xl:col-3">
+                                <label for="">Gerencia a la que pertenece</label> <br>
+                                <input
+                                class="full-width"
+                                    type="text"
+                                    pInputText
+                                    tooltipPosition="right"
+                                    value= "{{ assignmentData.data.headOfEmployee.subManagement }}"
+                                    readonly
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex pt-4 justify-content-end">
+                    <p-button
+                        label="Siguiente"
+                        icon="pi pi-arrow-right"
+                        iconPos="right"
+                        severity="help"
+                        (onClick)="nextCallback.emit()" />
+                </div>
+            </ng-template>
+        </p-stepperPanel>
+<!--PASO 2-->
+        <p-stepperPanel header="Datos colaborador asignación previa" *ngIf="assignmentData.data.prevAssignment !== undefined">
+            <ng-template pTemplate="content" let-prevCallback="prevCallback" let-nextCallback="nextCallback" let-index="index">
+                <div>
+                    <div class="border-2 p-2  surface-border border-round claro-g-100 ">
+                        <div class="grid">
+                            <div class="col-12 xl:col-12">
+                                <h5>Colaborador con parqueo asignado que ya no utiliza</h5>
+                            </div>
+
+                            <div class="col-12 xl:col-3">
+                                <label for="">Nombre</label> <br>
+                                <input
+                                class="full-width"
+                                    type="text"
+                                    pInputText
+                                    tooltipPosition="right"
+                                    value= "{{ assignmentData.data.prevAssignment.employee.name }}"
+                                    readonly
+                                />
+                            </div>
+
+                            <div class="col-12 xl:col-3">
+                                <label for="">Telefono</label> <br>
+                                <input
+                                class="full-width"
+                                    type="text"
+                                    pInputText
+                                    tooltipPosition="right"
+                                    value= "{{ assignmentData.data.prevAssignment.employee.phone }}"
+                                    readonly
+                                />
+                            </div>
+
+                            <div class="col-12 xl:col-3">
+                                <label for="">Código del colaborador</label> <br>
+                                <input
+                                class="full-width"
+                                    type="text"
+                                    pInputText
+                                    tooltipPosition="right"
+                                    value= "{{ assignmentData.data.prevAssignment.employee.employeeCode }}"
+                                    readonly
+                                />
+                            </div>
+
+                            <div class="col-12 xl:col-3">
+                                <label for="">Correo</label> <br>
+                                <input
+                                class="full-width"
+                                    type="text"
+                                    pInputText
+                                    tooltipPosition="right"
+                                    value= "{{ assignmentData.data.prevAssignment.employee.email }}"
+                                    readonly
+                                />
+                            </div>
+
+
+                            <div class="col-12 xl:col-3">
+                                <label for="">Puesto</label> <br>
+                                <input
+                                class="full-width"
+                                    type="text"
+                                    pInputText
+                                    tooltipPosition="right"
+                                    value= "{{ assignmentData.data.prevAssignment.employee.management1 }}"
+                                    readonly
+                                />
+                            </div>
+
+                            <div class="col-12 xl:col-3">
+                                <label for="">Gerencia a la que pertenece</label> <br>
+                                <input
+                                class="full-width"
+                                    type="text"
+                                    pInputText
+                                    tooltipPosition="right"
+                                    value= "{{ assignmentData.data.prevAssignment.employee.subManagement }}"
+                                    readonly
+                                />
+                            </div>
+
+                            <div class="col-12 xl:col-3">
+                                <label for="">Placas</label> <br>
+                                <input
+                                class="full-width"
+                                    type="text"
+                                    pInputText
+                                    tooltipPosition="right"
+                                    value= "{{ assignmentData.data.prevAssignment.employee.vehicles[0].vehicleBadge }}"
+                                    readonly
+                                />
+                            </div>
+
+                            <div class="col-12 xl:col-3">
+                                <label for="">No. de tarjeta</label> <br>
+                                <input
+                                class="full-width"
+                                    type="text"
+                                    pInputText
+                                    tooltipPosition="right"
+                                    value= "{{ assignmentData.data.location.numberOfIdentifier }}"
+                                    readonly
+                                />
+                            </div>
+
+                            <div class="col-12 xl:col-3">
+                                <label for="">No. de Parqueo / Slot</label> <br>
+                                <input
+                                class="full-width"
+                                    type="text"
+                                    pInputText
+                                    tooltipPosition="right"
+                                    value= "{{ assignmentData.data.location.slots[0].slotNumber}}"
+                                    readonly
+                                />
+                            </div>
+
+                            <div class="col-12 xl:col-3">
+                                <label for="">Fecha Inicial</label> <br>
+                                <input
+                                class="full-width"
+                                    type="text"
+                                    pInputText
+                                    tooltipPosition="right"
+                                    value= "{{ assignmentData.data.prevAssignment.assignmentDate | date:'dd/MM/yyyy' }}"
+                                />
+                            </div>
+
+                            <div class="col-12 xl:col-3">
+                                <label for="">Fecha Final</label> <br>
+                                <input
+                                class="full-width"
+                                    type="text"
+                                    pInputText
+                                    tooltipPosition="right"
+                                    value= "{{ assignmentData.data.prevAssignment.deAssignment.deAssignmentDate | date:'dd/MM/yyyy' }}"
+                                />
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="flex pt-4 justify-content-between">
+                    <p-button
+                        label="Anterior"
+                        icon="pi pi-arrow-left"
+                        severity="help"
+                        (onClick)="prevCallback.emit()" />
+                    <p-button
+                        label="Siguiente"
+                        icon="pi pi-arrow-right"
+                        iconPos="right"
+                        severity="help"
+                        (onClick)="nextCallback.emit()" />
+                </div>
+            </ng-template>
+        </p-stepperPanel>
+<!--PASO 3-->
+        <p-stepperPanel header="Datos colaborador propuesto">
+            <ng-template pTemplate="content" let-prevCallback="prevCallback" let-nextCallback="nextCallback" let-index="index">
+                <div>
+                    <div class="border-2 p-2  surface-border border-round claro-g-100 ">
+                        <div class="grid">
+
+                            <div class="col-12 xl:col-12">
+                                <h5>Colaborador propuesto para ocupar el parqueo disponible</h5>
+                            </div>
+                            <div class="col-12 xl:col-3">
+                                <label for="">Nombre</label> <br>
+                                <input
+                                class="full-width"
+                                    type="text"
+                                    pInputText
+                                    tooltipPosition="right"
+                                    value= "{{ assignmentData.data.currAssignment.employee.name }}"
+                                    readonly
+                                />
+                            </div>
+
+                            <div class="col-12 xl:col-3">
+                                <label for="">Telefono</label> <br>
+                                <input
+                                class="full-width"
+                                    type="text"
+                                    pInputText
+                                    tooltipPosition="right"
+                                    value= "{{ assignmentData.data.currAssignment.employee.phone }}"
+                                    readonly
+                                />
+                            </div>
+
+                            <div class="col-12 xl:col-3">
+                                <label for="">Código del colaborador</label> <br>
+                                <input
+                                class="full-width"
+                                    type="text"
+                                    pInputText
+                                    tooltipPosition="right"
+                                    value= "{{ assignmentData.data.currAssignment.employee.employeeCode }}"
+                                    readonly
+                                />
+                            </div>
+
+                            <div class="col-12 xl:col-3">
+                                <label for="">Correo</label> <br>
+                                <input
+                                class="full-width"
+                                    type="text"
+                                    pInputText
+                                    tooltipPosition="right"
+                                    value= "{{ assignmentData.data.currAssignment.employee.email }}"
+                                    readonly
+                                />
+                            </div>
+
+
+                            <div class="col-12 xl:col-3">
+                                <label for="">Puesto</label> <br>
+                                <input
+                                class="full-width"
+                                    type="text"
+                                    pInputText
+                                    tooltipPosition="right"
+                                    value= "{{ assignmentData.data.currAssignment.employee.workplace }}"
+                                    readonly
+                                />
+                            </div>
+
+                            <div class="col-12 xl:col-3">
+                                <label for="">Gerencia a la que pertenece</label> <br>
+                                <input
+                                class="full-width"
+                                    type="text"
+                                    pInputText
+                                    tooltipPosition="right"
+                                    value= "{{ assignmentData.data.currAssignment.employee.management1 }}"
+                                    readonly
+                                />
+                            </div>
+
+                            <div class="col-12 xl:col-3">
+                                <label for="">Placas</label> <br>
+                                <input
+                                class="full-width"
+                                    type="text"
+                                    pInputText
+                                    tooltipPosition="right"
+                                    value= "{{ assignmentData.data.currAssignment.employee.vehicles[0].vehicleBadge }}"
+                                    readonly
+                                />
+                            </div>
+
+                            <div class="col-12 xl:col-3">
+                                <label for="">No. de tarjeta</label> <br>
+                                <input
+                                class="full-width"
+                                    type="text"
+                                    pInputText
+                                    tooltipPosition="right"
+                                    value= "{{ assignmentData.data.location.numberOfIdentifier }}"
+                                    readonly
+                                />
+                            </div>
+
+                            <div class="col-12 xl:col-3">
+                                <label for="">No. de Parqueo / Slot</label> <br>
+                                <input
+                                class="full-width"
+                                    type="text"
+                                    pInputText
+                                    tooltipPosition="right"
+                                    value= "{{ assignmentData.data.location.slots[0].slotNumber}}"
+                                    readonly
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex pt-4 justify-content-between">
+                    <p-button
+                        label="Anterior"
+                        icon="pi pi-arrow-left"
+                        severity="help"
+                        (onClick)="prevCallback.emit()" />
+                    <p-button
+                        label="Siguiente"
+                        icon="pi pi-arrow-right"
+                        iconPos="right"
+                        severity="help"
+                        (onClick)="nextCallback.emit()" />
+                </div>
+            </ng-template>
+        </p-stepperPanel>
+<!--PASO 4-->
+        <p-stepperPanel header="Tipo de beneficio">
+            <ng-template pTemplate="content" let-prevCallback="prevCallback" let-index="index">
+                <div>
+                    <div class="border-2 p-2  surface-border border-round claro-g-100 ">
+
+                        <div class="grid">
+                            <div class="col-12 xl:col-12">
+                                <h5>Tipos de Beneficios</h5>
+                            </div>
+                            <div class="col-12 xl:col-3">
+                                <label for="">Asignación</label> <br>
+                                <input
+                                class="full-width"
+                                    type="text"
+                                    pInputText
+                                    tooltipPosition="right"
+                                    value= "{{ assignmentData.data.currAssignment.benefitType === 'SIN_COSTO' ? 'SIN COSTO' : assignmentData.data.currAssignment.benefitType  }}"
+                                    readonly
+                                />
+                            </div>
+                            <div class="col-12 xl:col-3">
+                                <label for="">Reembolso / Complemento 50%</label> <br>
+                                <div class="flex flex-wrap gap-3">
+                                    <div class="flex align-items-center">
+                                        <p-radioButton
+                                            name="reembolso"
+                                            value="si"
+                                            [(ngModel)]="reembolso"
+                                            inputId="reembolsosi"
+                                            [disabled]="reembolsoStatus"
+                                            />
+                                        <label for="reembolsosi" class="ml-2">
+                                            SI
+                                        </label>
+                                    </div>
+
+                                    <div class="flex align-items-center">
+                                        <p-radioButton
+                                            name="reembolso"
+                                            value="no"
+                                            [(ngModel)]="reembolso"
+                                            inputId="reembolsono"
+                                            [disabled]="reembolsoStatus"
+                                            />
+                                        <label for="reembolsono" class="ml-2">
+                                            NO
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-12 xl:col-3">
+                                <label for="">Descuento 50%</label> <br>
+                                <div class="flex flex-wrap gap-3">
+                                    <div class="flex align-items-center">
+                                        <p-radioButton
+                                            name="descuento"
+                                            value="si"
+                                            [(ngModel)]="descuento"
+                                            inputId="descuentono"
+                                            [disabled]="descuentoStatus"
+                                            />
+                                        <label for="descuentono" class="ml-2">
+                                            SI
+                                        </label>
+                                    </div>
+
+                                    <div class="flex align-items-center">
+                                        <p-radioButton
+                                            name="descuento"
+                                            value="no"
+                                            [(ngModel)]="descuento"
+                                            inputId="descuentosi"
+                                            [disabled]="descuentoStatus"
+                                            />
+                                        <label for="descuentosi" class="ml-2">
+                                            NO
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                     <div class="flex flex-wrap" style="min-width: 100%;">
+                            <div class="col" style="min-width: 20rem;">
+                                <div class="col-12 xl:col-12">
+                                    <h5>Jefe de seguridad</h5>
+                                </div>
+                                <div class="grid">
+                                    <div class="col-12 xl:col-6">
+                                        <label for="">Nombre</label> <br>
+                                        <input
+                                            class="full-width"
+                                            type="text"
+                                            pInputText
+                                            tooltipPosition="right"
+                                            value="{{ signatures.security_boss.name }}"
+                                            readonly
+                                        />
+                                    </div>
+
+                                    <div class="col-12 xl:col-5">
+                                        <label for="">Código Colaborador</label> <br>
+                                        <input
+                                            class="full-width"
+                                            type="text"
+                                            pInputText
+                                            tooltipPosition="right"
+                                            value="{{ signatures.security_boss.employee_code }}"
+                                            readonly
+                                        />
+                                    </div>
+                                </div>
+                         </div>
+
+
+                        <div class="col" style="min-width: 20rem;">
+                            <div class="col-12 xl:col-12">
+                                <h5>Bdd parqueos</h5>
+                            </div>
+
+                            <div class="grid">
+                                <div class="col-12 xl:col-6">
+                                    <label for="">Nombre</label> <br>
+                                    <input
+                                    class="full-width"
+                                        type="text"
+                                        pInputText
+                                        tooltipPosition="right"
+                                        value= "{{ signatures.parking_manager.name }}"
+                                        readonly
+                                    />
+                                </div>
+
+                                <div class="col-12 xl:col-5">
+                                    <label for="">Código Colaborador</label> <br>
+                                    <input
+                                    class="full-width"
+                                        type="text"
+                                        pInputText
+                                        tooltipPosition="right"
+                                        value= "{{ signatures.parking_manager.employee_code }}"
+                                        readonly
+                                    />
+                                </div>
+                            </div>
+
+                        </div>
+                     </div>
+
+                    <div class="flex flex-wrap" style="min-width: 100%;">
+                        <div class="col" style="min-width: 20rem;">
+                            <div class="col-12 xl:col-12">
+                                <h5>Vo.Bo. RRHH nominas</h5>
+                            </div>
+                            <div class="grid">
+
+                                <div class="col-12 xl:col-6">
+                                    <label for="">Nombre</label> <br>
+                                    <input
+                                    class="full-width"
+                                        type="text"
+                                        pInputText
+                                        tooltipPosition="right"
+                                        value= "{{ signatures.human_resources_payroll.name }}"
+                                        readonly
+                                    />
+                                </div>
+
+                                <div class="col-12 xl:col-5">
+                                    <label for="">Código Colaborador</label> <br>
+                                    <input
+                                    class="full-width"
+                                        type="text"
+                                        pInputText
+                                        tooltipPosition="right"
+                                        value= "{{ signatures.human_resources_payroll.employee_code }}"
+                                        readonly
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col" style="min-width: 20rem;"></div>
+                    </div>
+
+
+                    <div class="flex flex-wrap" style="min-width: 100%;">
+                        <div class="col" style="min-width: 20rem;">
+                            <div class="col-12 xl:col-12">
+                                <h5>Director de RRHH y asuntos regulatorios</h5>
+                            </div>
+                            <div class="grid">
+                                <div class="col-12 xl:col-6">
+                                    <label for="">Nombre</label> <br>
+                                    <input
+                                        class="full-width"
+                                        type="text"
+                                        pInputText
+                                        tooltipPosition="right"
+                                        value= "{{  signatures.human_resources_manager.name  }}"
+                                        readonly
+                                    />
+                                </div>
+
+                                <div class="col-12 xl:col-5">
+                                    <label for="">Código Colaborador</label> <br>
+                                    <input
+                                        class="full-width"
+                                        type="text"
+                                        pInputText
+                                        tooltipPosition="right"
+                                        value= "{{ signatures.human_resources_manager.employee_code  }}"
+                                        readonly
+                                    />
+                                </div>
+                            </div>
+                     </div>
+
+                    <div class="col" style="min-width: 20rem;">
+                        <div class="col-12 xl:col-12">
+                            <h5>Exonerar </h5>
+                        </div>
+
+                        <div class="grid">
+                            <div class="col-12 xl:col-6">
+                                <label for="">Se exonera al colaborador de descuento</label> <br>
+
+                                <div class="flex flex-wrap gap-3">
+                                    <div class="flex align-items-center">
+                                        <p-radioButton
+                                            name="exonera"
+                                            value="true"
+                                            [(ngModel)]="exonera"
+                                            inputId="exonerasi" />
+                                        <label for="exonerasi" class="ml-2">
+                                            SI
+                                        </label>
+                                    </div>
+
+                                    <div class="flex align-items-center">
+                                        <p-radioButton
+                                            name="exonera"
+                                            value="false"
+                                            [(ngModel)]="exonera"
+                                            inputId="exonerano" />
+                                        <label for="exonerano" class="ml-2">
+                                            NO
+                                        </label>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="col-12 xl:col-5">
+                            </div>
+                        </div>
+
+                    </div>
+                 </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex pt-4 justify-content-start">
+                    <p-button
+                        label="Anterior"
+                        icon="pi pi-arrow-left"
+                        severity="help" 
+                        (onClick)="prevCallback.emit()" />
+                </div>
+            </ng-template>
+        </p-stepperPanel>
+</p-stepper>
+
+
+<p-toolbar styleClass="mt-4 gap-2">
+    <ng-template pTemplate="left">
+
+    </ng-template>
+    <ng-template pTemplate="center">
+
+        <p-button
+           severity="info"
+           label="Enviar Formulario"
+           icon="pi pi-check"
+           class="mr-2"
+           (onClick)="confirmForm()"
+           [disabled]="!exonera"
+        />
+        <p-button
+        severity="danger"
+        label="Cancelar"
+        icon="pi pi-times"
+        class="mr-2"
+        (onClick)="cancelForm()"
+        [disabled]="sButtonDisabled"
+     />
+   </ng-template>
+   <ng-template pTemplate="end">
+
+    </ng-template>
+</p-toolbar>
+</p-card>

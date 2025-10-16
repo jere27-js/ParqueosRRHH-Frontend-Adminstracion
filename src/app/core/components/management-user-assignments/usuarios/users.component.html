@@ -1,0 +1,190 @@
+<div class="grid">
+    <div class="col-12">
+        <div class="card px-6 py-6">
+            <p-toast></p-toast>
+
+            <p-toolbar styleClass="mb-4">
+                <ng-template pTemplate="right">
+                    <div class="my-2">
+                        <button pButton pRipple label="Agregar Usuario" icon="pi pi-plus" class="p-button-success mr-2"
+                            (click)="redirigir()"></button>
+                    </div>
+                </ng-template>
+            </p-toolbar>
+
+           <p-table #dt [value]="users" [columns]="cols" responsiveLayout="scroll"
+         [rows]="rowsPerPage"
+         [globalFilterFields]="['name','email','role.name','status']" [paginator]="true"
+         [rowsPerPageOptions]="rowsPerPageOptions" [showCurrentPageReport]="true"
+         currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros"
+         [rowHover]="true" dataKey="id"
+         [scrollable]="shouldScroll" scrollHeight="450px">
+
+
+                <ng-template pTemplate="caption">
+                    <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+                        <h5 class="m-0">Usuarios</h5>
+                        <span class="block mt-2 md:mt-0 p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                            <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Buscar..."
+                                class="w-full sm:w-auto" />
+                        </span>
+                    </div>
+                </ng-template>
+
+                <ng-template pTemplate="header">
+                    <tr>
+
+                        <!-- <th pSortableColumn="code">Code <p-sortIcon field="code"></p-sortIcon></th> -->
+                        <th pSortableColumn="name">Nombre de Usuario<p-sortIcon field="name"></p-sortIcon></th>
+                        <th pSortableColumn="email">Email<p-sortIcon field="email"></p-sortIcon></th>
+                        <th pSortableColumn="role">Rol<p-sortIcon field="role"></p-sortIcon></th>
+                        <th pSortableColumn="status">Estado<p-sortIcon field="status"></p-sortIcon></th>
+                        <th pSortableColumn="actions">Acciones</th>
+                        <th></th>
+                    </tr>
+                </ng-template>
+
+                <ng-template pTemplate="body" let-user>
+                    <tr>
+                        <!-- <td style="width:14%; min-width:10rem;"><span class="p-column-title">Code</span>
+                            {{role.id}}
+                        </td> -->
+                        <td style="width:25%; min-width:15rem;">
+                            <span class="p-column-title">Nombre</span>
+                            {{user.name}}
+                        </td>
+
+                        <td style="width:25%; min-width:10rem;">
+                            <span class="p-column-title">Espacios Disponibles</span>
+                            {{user.email}}
+                        </td>
+
+                        <td style="width:25%; min-width:10rem;">
+                            <span class="p-column-title">Espacios Disponibles</span>
+                            {{user.role.name}}
+                        </td>
+
+                        <td style="width:25%; min-width:8rem;">
+                            <span class="p-column-title">Espacios Ocupado</span>
+                            <p-tag [value]="user.status" [severity]="getSeverity(user.status)" />
+                        </td>
+
+                        <td style="width:15%; min-width:20rem;">
+                            <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2"
+                                (click)="onEdit(user.id)"> </button>
+                            <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning mr-2"
+                                (click)="confirmDelete(user)"> </button>
+                            <button pButton pRipple icon="pi pi-eye" class="p-button-rounded p-button-info"
+                                (click)="viewUser(user)"> </button>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+            <p-confirmDialog key="confirmDeleteUser"></p-confirmDialog>
+
+        </div>
+
+
+
+    </div>
+</div>
+
+
+<p-dialog [(visible)]="userDetail" [style]="{width: '1100px'}" header="Detalle de usuario" [modal]="true"
+    class="p-fluid">
+    <ng-template pTemplate="content">
+        <div class="card">
+            <h4>Ver Usuario</h4>
+            <p-divider></p-divider>
+
+            <form [formGroup]="formularioUsers" autocomplete="off">
+                <div class="p-fluid p-formgrid grid">
+
+                    <div class="field col-6">
+                        <label for="nombreUsuario">Nombre*</label>
+                        <input type="text" pInputText formControlName="name" placeholder="name">
+                    </div>
+
+                    <div class="field col-6">
+                        <label for="username-input">Usuario de Red*</label>
+                        <input id="username-input" type="text" pInputText formControlName="username" autocomplete="off">
+                        <div
+                            *ngIf="formularioUsers.get('username').touched && formularioUsers.get('username').hasError('maxlength')">
+                            <small class="text-danger">Solo se permiten 75 caracteres</small>
+                        </div>
+                        <div
+                            *ngIf="formularioUsers.get('username').touched && formularioUsers.get('username').hasError('required')">
+                            <small class="text-danger">Este campo es obligatorio</small>
+                        </div>
+                    </div>
+
+                    <div class="field col-6">
+                        <label for="phone-input">Teléfono*</label>
+                        <input id="phone-input" type="text" pInputText formControlName="phone">
+                        <div
+                            *ngIf="formularioUsers.get('phone').touched && formularioUsers.get('phone').hasError('maxlength')">
+                            <small class="text-danger">Solo se permiten 50 caracteres</small>
+                        </div>
+                        <div
+                            *ngIf="formularioUsers.get('phone').touched && formularioUsers.get('phone').hasError('pattern')">
+                            <small class="text-danger">El teléfono debe ser un número válido.</small>
+                        </div>
+                        <div
+                            *ngIf="formularioUsers.get('phone').touched && formularioUsers.get('phone').hasError('required')">
+                            <small class="text-danger">Este campo es obligatorio</small>
+                        </div>
+                    </div>
+
+                    <div class="field col-6">
+                        <label for="float-input">E-mail* </label>
+                        <input id="float-input" type="email" pInputText formControlName="email" autocomplete="off">
+                        <div
+                            *ngIf="formularioUsers.get('email').touched && formularioUsers.get('email').hasError('maxlength')">
+                            <small class="text-danger">Solo se permiten 50 caracteres</small>
+                        </div>
+                        <div
+                            *ngIf="formularioUsers.get('email').touched && formularioUsers.get('email').hasError('pattern')">
+                            <small class="text-danger">Debe ingresar un email válido.</small>
+                        </div>
+                        <div
+                            *ngIf="formularioUsers.get('email').touched && formularioUsers.get('email').hasError('required')">
+                            <small class="text-danger">Este campo es obligatorio.</small>
+                        </div>
+                    </div>
+
+                    <div class="field col-6">
+                        <label for="p-float-input">Estado*</label>
+
+                        <p-dropdown [options]="statusOptions" formControlName="status"
+                            placeholder="Selecciona el Estado*" [showClear]="true" optionLabel="nameStatus"
+                            optionValue="nameStatus" emptyMessage="No hay estados disponibles">
+                        </p-dropdown>
+
+                        <div
+                            *ngIf="formularioUsers.get('status').hasError('required') && formularioUsers.get('status').touched">
+                            <small class="text-danger">Este campo es obligatorio</small>
+                        </div>
+                    </div>
+
+                    <div class="field col-6">
+                        <label for="p-float-input">Rol*</label>
+                        <p-dropdown [options]="roles" formControlName="role" placeholder="Selecciona el Rol*"
+                            [showClear]="true" optionLabel="label" optionValue="value"></p-dropdown>
+                        <div
+                            *ngIf="formularioUsers.get('role').hasError('required') && formularioUsers.get('role').touched">
+                            <small class="text-danger">Este campo es obligatorio</small>
+                        </div>
+                    </div>
+                    <p-toast></p-toast>
+                </div>
+            </form>
+            <p-toast></p-toast>
+        </div>
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Salir" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+    </ng-template>
+
+</p-dialog>

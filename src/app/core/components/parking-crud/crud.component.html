@@ -1,0 +1,95 @@
+<div class="grid">
+    <div class="col-12">
+        <div class="card px-6 py-6">
+            <p-toast></p-toast>
+            <p-toolbar styleClass="mb-4">
+                <ng-template pTemplate="right">
+                    <div class="my-2">
+                        <button pButton pRipple label="Agregar nuevo parqueo" icon="pi pi-plus"
+                            class="p-button-success mr-2" (click)="redirigir()"></button>
+                    </div>
+                </ng-template>
+            </p-toolbar>
+
+            <p-table #dt [value]="parkings" [columns]="cols" [paginator]="true" [rows]="rowsPerPage"
+                [rowsPerPageOptions]="rowsPerPageOptions" [showCurrentPageReport]="true"
+                currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} parqueos"
+                [scrollable]="shouldScroll" scrollHeight="450px"
+                [globalFilterFields]="['name','availableSlots','occupiedSlots','unavailableSlots','status']"
+                [rowHover]="true" dataKey="id" responsiveLayout="scroll">
+
+                <ng-template pTemplate="caption">
+                    <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+                        <h5 class="m-0">Parqueos</h5>
+                        <span class="block mt-2 md:mt-0 p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                            <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Buscar..."
+                                class="w-full sm:w-auto" />
+                        </span>
+                    </div>
+                </ng-template>
+
+                <ng-template pTemplate="header">
+                    <tr>
+
+                        <!-- <th pSortableColumn="code">Code <p-sortIcon field="code"></p-sortIcon></th> -->
+                        <th pSortableColumn="name">Nombre Parqueo <p-sortIcon field="name"></p-sortIcon></th>
+                        <th pSortableColumn="availableSlots">Disponibles <p-sortIcon
+                                field="availableSlots"></p-sortIcon></th>
+                        <th pSortableColumn="occupiedSlots">Ocupados <p-sortIcon field="occupiedSlots"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="unavailableSlots">No Disponible <p-sortIcon
+                                field="unavailableSlots"></p-sortIcon></th>
+                        <th pSortableColumn="status">Estado<p-sortIcon field="status"></p-sortIcon></th>
+                        <th pSortableColumn="actions">Acciones</th>
+
+                        <th></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-parkings>
+                    <tr>
+                        <!-- <td style="width:14%; min-width:10rem;"><span class="p-column-title">Code</span>
+                            {{parkings.id}}
+                        </td> -->
+                        <td style="width:25%; min-width:30rem;">
+                            <span class="p-column-title">Nombre</span>
+                            {{parkings.name}}
+                        </td>
+                        <td style="width:25%; min-width:10rem;">
+                            <span class="p-column-title">Espacios Disponibles</span>
+                            {{parkings.availableSlots}}
+                        </td>
+                        <td style="width:25%; min-width:8rem;">
+                            <span class="p-column-title">Espacios Ocupado</span>
+                            {{parkings.occupiedSlots}}
+                        </td>
+                        <td style="width:25%; min-width:8rem;">
+                            <span class="p-column-title">Espacios No Disponibless</span>
+                            {{parkings.unavailableSlots}}
+                        </td>
+                        <td style="width:25%; min-width:8rem;">
+                            <span class="p-column-title">Estado</span>
+                            <p-tag [value]="parkings.status" [severity]="getSeverity(parkings.status)" />
+                        </td>
+
+                        <td style="width:15%; min-width:20rem;">
+                            <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2"
+                                (click)="onEdit(parkings.id)"> </button>
+                            <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning mr-2"
+                                (click)="deleteProduct(parkings)"> </button>
+                            <button pButton pRipple icon="pi pi-eye" class="p-button-rounded p-button-info"
+                                (click)="onViewParking(parkings.id)"> </button>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+
+
+
+        <p-confirmDialog key="confirm" header="Confirmación" icon="pi pi-exclamation-triangle"
+            [style]="{ width: '350px' }" rejectButtonStyleClass="p-button-text">
+        </p-confirmDialog>
+
+    </div>
+</div>

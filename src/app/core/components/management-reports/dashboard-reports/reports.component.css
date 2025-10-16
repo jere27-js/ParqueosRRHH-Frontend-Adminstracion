@@ -1,0 +1,11 @@
+.report-selector-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-bottom: 25px; /* Añade espacio al final del contenedor */
+}
+
+.report-selector {
+    flex: 0.5;
+    margin-bottom: 0;
+}

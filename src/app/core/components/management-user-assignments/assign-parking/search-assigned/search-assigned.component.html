@@ -1,0 +1,372 @@
+
+
+<p-toast></p-toast>
+<p-confirmDialog />
+
+<p-toolbar >
+    <ng-template pTemplate="left">
+        <!-- Contenido izquierdo si es necesario -->
+    </ng-template>
+
+    <ng-template pTemplate="right">
+        <div class="button-container">
+            <button
+                pButton
+                type="button"
+                severity="success"
+                label="Asignar Parqueo"
+                icon="pi pi-plus"
+                class="custom-button"
+                (click)="redirectAssignmentform()"
+            >
+            </button>
+
+            <button
+                pButton
+                type="button"
+                severity="secondary"
+                label="Formulario Aceptación"
+                icon="pi pi-book"
+                class="custom-button"
+                (click)="redirectToAcceptanceForm()"
+                [disabled]="accepFomButtonDisabled"
+            >
+            </button>
+
+            <button
+                pButton
+                type="button"
+                severity="secondary"
+                label="Opciones Aceptación"
+                icon="pi pi-list"
+                class="custom-button"
+                (click)="displayDialog1 = true"
+                [disabled]="optionFomButtonDisabled"
+            >
+            </button>
+
+            <button
+                pButton
+                type="button"
+                severity="secondary"
+                label="Nota de Descuento"
+                icon="pi pi-envelope"
+                class="custom-button"
+                (click)="displayDialog3 = true"
+                [disabled]="discountNoteButtonDisabled"
+            >
+            </button>
+
+            <button
+                pButton
+                type="button"
+                severity="info"
+                label="{{ label }}"
+                icon="{{ icon }}"
+                class="custom-button"
+                (click)="redirectToGuestForm()"
+                [disabled]="guestFomButtonDisabled"
+            >
+            </button>
+
+            <button
+                pButton
+                type="button"
+                severity="danger"
+                label="Dar de Baja"
+                icon="pi pi-trash"
+                class="custom-button"
+                (click)="displayDialog2 = true"
+                [disabled]="deallocatedFomButtonDisabled"
+            >
+            </button>
+        </div>
+    </ng-template>
+</p-toolbar>
+
+    <p-table #dt
+    [value]="parkingLocations"
+    [globalFilterFields]="['employee.name', 'employee.email', 'employee.phone','location.name', 'slotNumber',
+         'assignmentDate','deAssignment.deAssignmentDate', 'assignmentLoan.status', 'benefitType', 'status']"
+    selectionMode="single"
+    [(selection)]="selectedAssignments"
+    dataKey="id"
+    [tableStyle]="{ 'min-width': '60rem' }"
+    [rows]="5"
+    [paginator]="true"
+    stateStorage="session"
+    stateKey="statedemo-session"
+
+    [totalRecords]="totalRecords"
+    responsiveLayout="scroll"
+    [rowsPerPageOptions]="[5,10,20,50,100]"
+    [showCurrentPageReport]="true"
+    currentPageReportTemplate="Mostrando {last} Registros"
+
+    (onRowSelect)="onRowSelect($event)"
+    (onRowUnselect)="onRowUnselect($event)"
+    scrollable="true"
+    scrollHeight="450px"
+>
+<ng-template pTemplate="caption">
+    <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+        <h5 class="m-0">Parqueos</h5>
+        <span class="block mt-2 md:mt-0 p-input-icon-left">
+            <i class="pi pi-search"></i>
+            <input pInputText type="text"
+            (input)="dt.filterGlobal($event.target.value, 'contains')"
+            placeholder= "Buscar..."  class="w-full sm:w-auto"/>
+        </span>
+    </div>
+</ng-template>
+    <ng-template pTemplate="header">
+        <tr>
+            <th pSortableColumn="employee.name" style="min-width:15rem">
+                Nombre Colaborador <p-sortIcon field="employee.name" />
+            </th>
+            <th pSortableColumn="employee.email" style="min-width:15rem">
+                Correo <p-sortIcon field="employee.email" />
+            </th>
+            <th pSortableColumn="employee.phone" style="min-width:10rem">
+                Teléfono <p-sortIcon field="employee.phone" />
+            </th>
+            <th pSortableColumn="location.name">
+                Nombre de parqueo <p-sortIcon field="location.name" />
+            </th>
+            <th pSortableColumn="slotNumber">
+                Número de parqueo <p-sortIcon field="slotNumber" />
+            </th>
+            <th pSortableColumn="assignmentDate" style="min-width:10rem">
+                Fecha de asignación <p-sortIcon field="assignmentDate" />
+            </th>
+            <th pSortableColumn="deAssignment.deAssignmentDate" style="min-width:10rem">
+                Fecha de baja <p-sortIcon field="deAssignment.deAssignmentDate" />
+            </th>
+            <th pSortableColumn="assignmentLoan.status" style="min-width:10rem">
+                Invitado <p-sortIcon field="assignmentLoan.status" />
+            </th>
+            <th pSortableColumn="benefitType" style="min-width:10rem">
+                Tipo de Beneficio <p-sortIcon field="benefitType" />
+            </th>
+            <th pSortableColumn="status" style="min-width:10rem">
+                Estado <p-sortIcon field="status" />
+            </th>
+            <th pSortableColumn="note" style="min-width:10rem">
+                Nota de Descuento <p-sortIcon field="note" />
+            </th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-parkingLocation>
+        <tr [pSelectableRow]="parkingLocation">
+            <td>
+                {{ parkingLocation.employee.name }}
+            </td>
+            <td>
+                {{ parkingLocation.employee.email }}
+            </td>
+            <td>
+                {{ parkingLocation.employee.phone }}
+            </td>
+            <td>
+                {{ parkingLocation.location.name }}
+            </td>
+            <td>
+                {{ parkingLocation.slotNumber }}
+            </td>
+            <td>
+                  {{ parkingLocation.assignmentDate | date:'dd/MM/yyyy'  }}
+            </td>
+            <td>
+                <span *ngIf="parkingLocation.deAssignment">
+                     {{ parkingLocation.deAssignment.deAssignmentDate | date:'dd/MM/yyyy'  }}
+                </span>
+            </td>
+            <td>
+                <span *ngIf="parkingLocation.assignmentLoan">
+                    {{ parkingLocation.assignmentLoan.status }}
+               </span>
+           </td>
+            <td>
+                {{  benefi(parkingLocation.benefitType) }}
+            </td>
+            <td>
+                <p-button label="{{ status(parkingLocation.status) }}" [severity]="getSeverity(parkingLocation.status)" [rounded]="true" size="small" />
+            </td>
+
+            <td>
+                <p-button  *ngIf="isRowSelected(parkingLocation) && parkingLocation.benefitType === 'DESCUENTO' && parkingLocation.status !== 'ASIGNADO' "
+                icon="pi pi-file"  severity="info" size="small" class="pr-2" (onClick)="displayDialog4 = true"  [disabled]="statusNoteButtonDisabled" />
+
+                <p-button *ngIf="!(isRowSelected(parkingLocation) && parkingLocation.benefitType === 'DESCUENTO' && parkingLocation.status !== 'ASIGNADO')"
+                icon="pi pi-file" severity="info" size="small" class="pr-2" [disabled]="true">
+                </p-button>
+            </td>
+
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="summary">
+        <div class="flex align-items-center justify-content-between">
+            Total de Asignaciones: {{ parkingLocations ? parkingLocations.length : 0 }}
+        </div>
+    </ng-template>
+</p-table>
+
+
+<!--OPCIONES FORMULARIO-->
+<p-dialog header="Opciones Formulario de Aceptación"
+      [modal]="true"
+      [(visible)]="displayDialog1"
+      [style]="{ width: '45rem' }"
+      [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
+      >
+      <ng-template pTemplate="header">
+        <div class="inline-flex align-items-center justify-content-center gap-2">
+            <h5>Por favor seleccione una opción para el Formulario de Aceptación.</h5>
+        </div>
+    </ng-template>
+         <div class="col-12 lg:col-12 xl:col-12">
+             <div class="card">
+                <div class="p-fluid">
+                    <div class="p-3">
+                        <p-button type="submit" label="Aceptar Formulario" [outlined]="true" severity="secondary" size="large"  (onClick)="acceptedForm()" ></p-button>
+                    </div>
+                    <div class="p-3">
+                         <p-button type="submit" label="Rechazar Formulario" severity="secondary" size="large" (onClick)="refusedForm()" ></p-button>
+                     </div>
+                     <div class="p-3">
+                         <p-button type="submit" label="Cancelar Formulario" severity="warning" size="large" (onClick)="canceledForm()" ></p-button>
+                     </div>
+                 </div>
+             </div>
+         </div>
+         <ng-template pTemplate="footer">
+            <p-button label="Cancelar" severity="info" (onClick)="displayDialog1 = false" />
+        </ng-template>
+</p-dialog>
+
+
+
+<!--DAR DE BAJA-->
+<p-dialog header="Dar de Baja"
+      [modal]="true"
+      [(visible)]="displayDialog2"
+      [style]="{ width: '45rem' }"
+      [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
+      >
+      <ng-template pTemplate="header">
+        <div class="inline-flex align-items-center justify-content-center gap-2">
+            <h4>Dar de Baja</h4><hr>
+        </div>
+    </ng-template>
+    <h5>Ingresa la justificación y la fecha para dar de baja <br> este estacionamiento.</h5>
+         <div class="col-12 lg:col-12 xl:col-12 p-4">
+                <div class="p-fluid">
+                    <div class="p-field">
+                      <p>Justificación </p>
+                      <textarea id="textarea" pInputTextarea rows="12" cols="30" [(ngModel)]="descripcion"  maxlength="255"></textarea>
+                      <div class="p-error block" *ngIf="descripcion?.length === 255">
+                        Límite alcanzado 255 caracteres.
+                      </div>
+                    </div>
+                    <div class="pt-4">
+                      <p class="pt-4">Fecha de Baja</p>         
+                        <p-calendar [(ngModel)]="date" dateFormat="dd/mm/yy"  [maxDate]="today"></p-calendar>
+                    </div>
+                </div>
+                <div class="p-fluid pt-4">
+                    <div class="pt-3">
+                         <p-button type="submit" label="Cancelar" severity="secondary" size="small" (onClick)="confirmCancel()" ></p-button>
+                     </div>
+                    <div class="pt-3">
+                        <p-button type="submit" label="Dar de Baja" severity="danger" size="small"  (onClick)="confirmDell()"   [disabled]="disabledButonBaja" ></p-button>
+                    </div>
+                </div>
+         </div>
+</p-dialog>
+
+
+<!--OPCIONES NOTA DE DESCUENTO-->
+<p-dialog header="Opciones Formulario de Aceptación"
+      [modal]="true"
+      [(visible)]="displayDialog3"
+      [style]="{ width: '45rem' }"
+      [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
+      >
+      <ng-template pTemplate="header">
+        <div class="inline-flex align-items-center justify-content-center gap-2">
+            <h4>Opciones de Nota de Descuento</h4>
+        </div>
+    </ng-template>
+    <h5>Por favor seleccione una opción para la Nota de Descuento.</h5>
+         <div class="col-12 lg:col-12 xl:col-12 p-4">
+
+                <div class="p-fluid">
+                    <div>
+                        <h5>Estado Actual: <span style="color: #FF8300;"> {{ statusSignature }}</span>  </h5>
+                    </div>
+                    <div class="pb-5">
+                        <h5>Última Notificación: {{ lastNotice | date:'dd/MM/yyyy' }}</h5>
+                    </div>
+                    <div class="pt-4">
+                        <p-button type="submit" label="Enviar Notificación" [outlined]="true" severity="secondary" size="large" (onClick)="discountNote()" [disabled]="sendDiscountNoteButtonDisabled" ></p-button>
+                    </div>
+                    <div class="pt-3">
+                         <p-button type="submit" label="Aceptada" severity="success" size="large"  (onClick)="approveddNote()" ></p-button>
+                     </div>
+                     <div class="pt-3">
+                         <p-button type="submit" label="Rechazada" severity="warning" size="large" (onClick)="refusedNote()"  ></p-button>
+                     </div>
+                     <div class="pt-3">
+                        <p-button type="submit" label="Cancelada" [outlined]="true" severity="secondary" size="large" (onClick)="canceledNote()" ></p-button>
+                    </div>
+                 </div>
+             </div>
+
+         <ng-template pTemplate="footer">
+            <p-button label="Cancelar" severity="info" (onClick)="displayDialog3 = false" />
+        </ng-template>
+</p-dialog>
+
+
+<!--ESTADO DE NOTA DE DESCUENTO-->
+<p-dialog header="Estado Nota de Descuento"
+      [modal]="true"
+      [(visible)]="displayDialog4"
+      [style]="{ width: '45rem' }"
+      [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
+      >
+      <ng-template pTemplate="header">
+        <div class="inline-flex align-items-center justify-content-center gap-2">
+            <h4>Estado de Nota de Descuento</h4>
+        </div>
+    </ng-template>
+        <div class="col-12 lg:col-12 xl:col-12 p-4">
+            <div class="card">
+                <div class="p-fluid">
+                    <div>
+                        <h5>Estado Actual: <span style="color: #FF8300;"> <b>  {{ statusSignature }} </b></span>  </h5>
+                    </div>
+                    <p-divider />
+                    <div>
+                        <h5>Asignado a:  {{ employeeName }}  </h5>
+                    </div>
+                    <div>
+                        <h5>Correo: {{ employeeEmail }}  </h5>
+                    </div>
+                    <div>
+                        <h5>Feha de Asignación:  {{ assignmentDate | date:'dd/MM/yyyy' }} </h5>
+                    </div>
+                    <div>
+                        <h5>Última Notificación:  {{ lastNotice | date:'dd/MM/yyyy' }}</h5>
+                    </div>
+                    <p-divider />
+                    <div>
+                        <h5>Envío de Nota: <span style="color: #FF8300;">   <b> {{ statusDispatched }} </b> </span></h5>
+                    </div>
+                </div>
+             </div>
+        </div>
+        <ng-template pTemplate="footer">
+            <p-button label="Cancelar"  severity="info" (onClick)="displayDialog4 = false" />
+        </ng-template>
+</p-dialog>

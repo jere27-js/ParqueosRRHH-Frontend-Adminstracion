@@ -1,0 +1,47 @@
+
+
+.card2{
+    border-radius:13px;
+    border: #0097A9;
+    background: linear-gradient(121deg, #0097A9 1.63%, #09BCC4 100%);
+
+}
+.card{
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius:13px;
+}
+.tw{
+ color: white;
+ font-weight: 500;
+ font-size: 1.6rem;
+}
+.tw2{
+    color: white;
+    font-weight: 400;
+    font-size: 1rem;
+   }
+.twt{
+    color: white;
+    font-weight: 600;
+    font-size: 1.7rem;
+   }
+.bt{
+    color: red;
+}
+
+hr {
+    border: 3px solid #FFC721;
+    border-radius: 2px;
+  }
+
+  .custom-red-button {
+    background-color: #DA291C;
+    color: white;
+}
+.custom-red-button:hover {
+    background-color: #B52217; /* Un rojo más oscuro para el efecto hover */
+}
+.custom-button:hover {
+    background-color: #DA291C; /* Un rojo más oscuro para el efecto hover */
+    color: white;
+}

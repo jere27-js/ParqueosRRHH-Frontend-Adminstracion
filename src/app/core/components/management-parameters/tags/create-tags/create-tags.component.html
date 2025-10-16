@@ -1,0 +1,63 @@
+<div class="card">
+    <h4>Crear nuevo grupo</h4>
+</div>
+
+<div class="card">
+    <form [formGroup]="formTags" (ngSubmit)="onSubmit()" autocomplete="off">
+        <div class="flex flex-column md:flex-row">
+            <div class="w-full md:w-6 flex flex-column align-items-start justify-content-start gap-3 py-3">
+
+                <div class="flex flex-column align-items-start gap-2 w-full">
+                    <label for="name" class="w-5rem">Nombre*</label>
+                    <input pInputText id="name" type="text" class="w-full" formControlName="name" />
+                    <small class="text-danger"
+                        *ngIf="formTags.controls['name'].touched && formTags.controls['name'].hasError('required')">
+                        El nombre es requerido.
+                    </small>
+                    <small class="text-danger"
+                        *ngIf="formTags.controls['name'].touched && formTags.controls['name'].hasError('maxlength')">
+                        El nombre no puede exceder los 50 caracteres.
+                    </small>
+                </div>
+
+                <div class="flex flex-column align-items-start gap-2 w-full">
+                    <label for="estado" class="w-5rem">Estado*</label>
+                    <p-dropdown [options]="statusOptions" placeholder="Selecciona el Estado" class="w-full"
+                        formControlName="status" optionLabel="nameStatus" optionValue="nameStatus" [showClear]="true"
+                        emptyMessage="No hay estados disponibles">
+                    </p-dropdown>
+                    <small class="text-danger"
+                        *ngIf="formTags.controls['status'].touched && formTags.controls['status'].hasError('required')">
+                        El estado es requerido.
+                    </small>
+                </div>
+
+                <div class="flex flex-column align-items-start gap-2 w-full">
+                    <label for="description" class="w-5rem">Descripción</label>
+                    <textarea rows="5" pInputTextarea formControlName="description"
+                        placeholder="Ingresa una descripción" class="w-full"></textarea>
+                    <small class="text-danger"
+                        *ngIf="formTags.controls['description'].touched && formTags.controls['description'].hasError('maxlength')">
+                        La descripción no puede exceder los 255 caracteres.
+                    </small>
+                </div>
+            </div>
+        </div>
+
+        <div class="buttons-container">
+            <p-button severity="success" (onClick)="confirm()" label="Guardar" icon="pi pi-check"
+                class="p-button-success"></p-button>
+            <p-button (onClick)="cancel()" label="Cancelar" severity="danger" icon="pi pi-times"
+                class="p-button-danger"></p-button>
+        </div>
+
+    </form>
+
+    <!-- Diálogos de confirmación -->
+    <p-confirmDialog header="Confirmar" key="confirm" icon="pi pi-exclamation-triangle" [style]="{width: '350px'}">
+    </p-confirmDialog>
+
+    <p-confirmDialog header="Confirmar" key="cancel" icon="pi pi-exclamation-triangle" [style]="{width: '350px'}">
+    </p-confirmDialog>
+</div>
+<p-toast></p-toast>

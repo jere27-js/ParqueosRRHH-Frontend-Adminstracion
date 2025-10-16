@@ -1,0 +1,143 @@
+<div class="card">
+    <p-toast></p-toast>
+    <h4>Notificaciones</h4>
+
+    <div class="p-fluid grid">
+        <div class="field col-12 md:col-4 xl:col-6">
+            <label>Buscar notificación</label>
+                <input type="text" pInputText placeholder="Buscar..." (input)="applyFilter($event.target.value)" />
+        </div>
+
+        <div class="field col-12 md:col-4 xl:col-3">
+            <label>Crear notificación</label>
+            <button pButton severity="primary" label="Crear" icon="pi pi-plus" (click)="createNotifications()"></button>
+        </div>
+
+        <div class="field col-12 md:col-4 xl:col-3">
+            <label>Recargar notificaciones</label>
+            <button pButton severity="primary" label="Recargar" icon="pi pi-refresh" (click)="reloadNotifications()"></button>
+        </div>
+    </div>
+
+    <div class="spacing-top"></div>
+
+    <!-- Tabla -->
+    <p-table [value]="filteredNotifications" [paginator]="true" [rows]="5" [totalRecords]="totalRecords"
+        [rowsPerPageOptions]="[5, 10, 20]" [showCurrentPageReport]="true"
+        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} notificaciones" selectionMode="single"
+        [(selection)]="selectedNotifications" responsiveLayout="scroll" scrollable="true" scrollHeight="400px"
+        [sortField]="'notificationDate'" [sortOrder]="-1">
+
+        <ng-template pTemplate="header">
+            <tr>
+                <th pSortableColumn="notificationDate">Fecha <p-sortIcon field="notificationDate"></p-sortIcon></th>
+                <th pSortableColumn="subject">Asunto<p-sortIcon field="subject"></p-sortIcon></th>
+                <th pSortableColumn="message">Mensaje <p-sortIcon field="message"></p-sortIcon></th>
+                <th pSortableColumn="emailStatus" class="center-content">Estado <p-sortIcon
+                        field="emailStatus"></p-sortIcon></th>
+                <th pSortableColumn="scheduled" class="center-content">Notificación Programada</th>
+                <th>Acciones</th>
+            </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-notification>
+            <tr>
+                <td>{{ notification.notificationDate | date:'dd/MM/yyyy HH:mm':'UTC' }}</td>
+                <td>{{ notification.subject }}</td>
+                <td td class="subject-cell">{{ notification.message }}</td>
+                <td class="center-content">
+                    <p-button [label]="getNotificationDisplayData(notification.emailStatus).label"
+                        [severity]="getNotificationDisplayData(notification.emailStatus).severity" size="small">
+                    </p-button>
+                </td>
+                <td class="center-content">
+                    <ng-container *ngIf="notification.isScheduled === 1; else notScheduled">
+                        <i class="pi pi-check icon-success"></i>
+                    </ng-container>
+                    <ng-template #notScheduled>
+                        <i class="pi pi-times icon-danger"></i>
+                    </ng-template>
+                </td>
+                <td>
+                    <!-- ver -->
+                    <p-button icon="pi pi-eye" (click)="viewNotification(notification)" size="small"
+                        class="p-button-info"></p-button>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+
+<!-- Vista del detalle de notificaciones -->
+<p-dialog [(visible)]="displayNotificationDialog" header="Detalle de Notificación" [modal]="true" [closable]="true"
+    [style]="{width: '70vw',  maxHeight: '95vh'}">
+    <div class="card">
+        <!-- Asunto -->
+        <div class="flex flex-column gap-2 mb-3">
+            <label for="subject" class="font-bold">Asunto</label>
+            <input id="subject" type="text" pInputText [value]="selectedNotification?.subject" class="w-full"
+                readonly />
+        </div>
+
+        <!-- Mensaje -->
+        <div class="flex flex-column gap-2 mb-3">
+            <label for="message" class="font-bold">Mensaje</label>
+            <textarea id="message" pInputTextarea [value]="selectedNotification?.message" rows="6" class="w-full"
+                readonly></textarea>
+        </div>
+
+        <!-- Destinatarios -->
+        <div class="flex flex-column gap-2 mb-3">
+            <ng-container *ngIf="selectedNotification?.tagName">
+                <label for="tagName" class="font-bold">Grupos</label>
+                <input id="tagName" type="text" pInputText [value]="selectedNotification?.tagName" class="w-full"
+                    readonly />
+            </ng-container>
+            <label for="recipients" class="font-bold">Destinatarios</label>
+            <!-- Filtro de búsqueda -->
+            <div class="search-container">
+                <i class="pi pi-search search-icon"></i>
+                <input id="searchRecipients" type="text" pInputText [(ngModel)]="searchQuery"
+                    (input)="filterRecipients()" placeholder="Buscar destinatarios..." class="search-input w-full" />
+            </div>
+
+            <!-- Lista de destinatarios -->
+            <div class="recipient-container">
+                <ng-container *ngFor="let recipient of filteredRecipients">
+                    <div class="recipient-item">{{ recipient }}</div>
+                </ng-container>
+            </div>
+        </div>
+
+
+        <div class="flex flex-row gap-4 align-items-center justify-content-center mb-3">
+            <!-- Programar Notificación -->
+            <div class="flex flex-row gap-2 align-items-center">
+                <label for="isScheduled" class="font-bold">Envío Programado:</label>
+                <p-inputSwitch id="isScheduled" [ngModel]="selectedNotification?.isScheduled === 1"
+                    [ngModelOptions]="{ standalone: true }" [disabled]="true">
+                </p-inputSwitch>
+            </div>
+
+            <!-- Fecha de Notificación -->
+            <div class="flex flex-row gap-2 align-items-center">
+                <label for="notificationDate" class="font-bold">Fecha de Envío:</label>
+                <td>{{ selectedNotification?.notificationDate | date:'yyyy-MM-dd HH:mm:ss':'UTC' }}</td>
+            </div>
+
+            <!-- Estado -->
+            <div class="flex flex-row gap-2 align-items-center">
+                <label for="emailStatus" class="font-bold">Estado:</label>
+                <p-tag [value]="getNotificationDisplayData(selectedNotification?.emailStatus)?.label"
+                    [severity]="getNotificationDisplayData(selectedNotification?.emailStatus)?.severity">
+                </p-tag>
+            </div>
+        </div>
+
+        <!-- Botón de Cerrar -->
+        <div class="buttons-container flex justify-content-center gap-2 mt-2">
+            <p-button severity="success" label="Cerrar" icon="pi pi-times" class="p-button-secondary"
+                (click)="hideDialog()"></p-button>
+        </div>
+    </div>
+</p-dialog>

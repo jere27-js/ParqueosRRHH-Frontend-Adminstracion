@@ -1,0 +1,28 @@
+
+<p-table
+        [value]="locationReports"
+        [paginator]="true"
+        [rows]="5"
+        [showCurrentPageReport]="true"
+        [tableStyle]="{ 'min-width': '50rem' }"
+        currentPageReportTemplate="{first} a {last} de {totalRecords} Registros"
+        [rowsPerPageOptions]="[5, 10, 15, 20, 50]"
+    >
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="width:25%">Nombre del Parqueo</th>
+                <th style="width:25%">Espacios Totales</th>
+                <th style="width:25%">Espacios Ocupados</th>
+                <th style="width:25%">Espacios Disponibles</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-location>
+            <tr>
+                <td>{{ location.parkingName }}</td>
+                <td>{{ location.totalSpaces }}</td>
+                <td>{{ location.occupiedSpaces }}</td>
+                <td>{{ location.availableSpaces}}</td>
+            </tr>
+        </ng-template>
+</p-table>
+

@@ -1,0 +1,103 @@
+<div class="card">
+    <h4>Crear Usuario</h4>
+</div>
+
+<div class="card">
+    <h5>Información del Usuario</h5>
+
+    <form [formGroup]="formularioUsers" autocomplete="off">
+        <div class="p-fluid p-formgrid grid">
+
+            <div class="field col-6">
+                <label for="nombreParqueo">Nombre*</label>
+                <input type="text" pInputText formControlName="name">
+                <div *ngIf="formularioUsers.get('name').touched && formularioUsers.get('name').hasError('maxlength')">
+                    <small class="text-danger">Solo se permiten 50 caracteres</small>
+                </div>
+                <div *ngIf="formularioUsers.get('name').touched && formularioUsers.get('name').hasError('required')">
+                    <small class="text-danger"> Este campo es obligatorio</small>
+                </div>
+            </div>
+
+            <div class="field col-6">
+                <label for="username-input">Usuario de Red*</label>
+                <input id="username-input" type="text" pInputText formControlName="username">
+                <div
+                    *ngIf="formularioUsers.get('username').touched && formularioUsers.get('username').hasError('maxlength')">
+                    <small class="text-danger">Solo se permiten 35 caracteres</small>
+                </div>
+                <div
+                    *ngIf="formularioUsers.get('username').touched && formularioUsers.get('username').hasError('required')">
+                    <small class="text-danger">Este campo es obligatorio</small>
+                </div>
+            </div>
+
+            <div class="field col-6">
+                <label for="phone-input">Teléfono*</label>
+                <p-inputMask mask="+(502) 99999999" formControlName="phone" placeholder="+(502) xxxxxxxxx"
+                    autoClear="true" />
+                <div *ngIf="formularioUsers.get('phone').touched && formularioUsers.get('phone').hasError('maxlength')">
+                    <small class="text-danger">Solo se permiten 15 caracteres</small>
+                </div>
+                <div *ngIf="formularioUsers.get('phone').touched && formularioUsers.get('phone').hasError('pattern')">
+                    <small class="text-danger">El teléfono debe ser un número válido.</small>
+                </div>
+
+                <div *ngIf="formularioUsers.get('phone').touched && formularioUsers.get('phone').hasError('required')">
+                    <small class="text-danger">Este campo es obligatorio</small>
+                </div>
+            </div>
+
+            <div class="field col-6">
+                <label for="float-input">E-mail* </label>
+                <input id="float-input" type="email" pInputText formControlName="email">
+                <div *ngIf="formularioUsers.get('email').touched && formularioUsers.get('email').hasError('maxlength')">
+                    <small class="text-danger">Solo se permiten 50 caracteres</small>
+                </div>
+                <div *ngIf="formularioUsers.get('email').touched && formularioUsers.get('email').hasError('pattern')">
+                    <small class="text-danger">Debe ingresar un email válido.</small>
+                </div>
+                <div *ngIf="formularioUsers.get('email').touched && formularioUsers.get('email').hasError('required')">
+                    <small class="text-danger">El email es requerido.</small>
+                </div>
+            </div>
+
+            <div class="field col-6">
+                <label for="p-float-input">Estado*</label>
+                <p-dropdown [options]="status" formControlName="status" placeholder=" Selecciona el Estado*"
+                    [showClear]="true" optionLabel="nameStatus" optionValue="nameStatus"
+                    emptyMessage="No hay estados disponibles"></p-dropdown>
+                <!-- Mensaje para el campo requerido -->
+                <div
+                    *ngIf="formularioUsers.get('status').hasError('required') && formularioUsers.get('status').touched">
+                    <small class="text-danger">Este campo es obligatorio</small>
+                </div>
+            </div>
+
+            <div class="field col-6">
+                <label for="p-float-input">Rol*</label>
+                <p-dropdown [options]="roles" formControlName="role" placeholder="Selecciona el Rol*" [showClear]="true"
+                    optionLabel="label" optionValue="value"></p-dropdown>
+                <!-- Mensaje para el campo requerido -->
+                <div *ngIf="formularioUsers.get('role').hasError('required') && formularioUsers.get('role').touched">
+                    <small class="text-danger">Este campo es obligatorio</small>
+                </div>
+            </div>
+
+            <p-toast></p-toast>
+        </div>
+    </form>
+
+    <p-confirmDialog key="confirm" header="Confirmación" icon="pi pi-exclamation-triangle" [style]="{ width: '350px' }"
+        rejectButtonStyleClass="p-button-text"></p-confirmDialog>
+
+    <p-confirmDialog key="confirm3" header="Confirmación" icon="pi pi-exclamation-triangle" [style]="{ width: '350px' }"
+        rejectButtonStyleClass="p-button-text"></p-confirmDialog>
+    <br>
+    <div style="display: flex; justify-content: center;">
+        <p-button severity="success" (onClick)="confirm()" label="Guardar" icon="pi pi-check"
+            [ngStyle]="{'width': 'auto'}"></p-button>
+        <p-button (onClick)="confirm3()" label="Cancelar" severity="danger"
+            [ngStyle]="{'width': 'auto', 'margin-left': '10px'}"></p-button>
+    </div>
+</div>

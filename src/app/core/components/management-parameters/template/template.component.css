@@ -1,0 +1,70 @@
+button[pButton] {
+    width: calc(100% - 10px);
+    /* Mantiene el tamaño sin modificar con el scroll */
+    height: 40px;
+    margin-bottom: 5px;
+    white-space: normal;
+    flex: 0 0 auto;
+}
+
+.button-save-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    top: 0px;
+    width: 100%;
+}
+
+button.p-button-success {
+    width: 150px;
+    height: 40px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.custom-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.editor-and-params {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.custom-editor {
+    flex: 1;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    min-height: 300px;
+    max-height: 300px;
+    padding: 1rem;
+    background: white;
+    box-sizing: border-box;
+    overflow-y: auto;
+    direction: ltr;
+}
+
+.param-toolbar {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    flex-shrink: 0;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.param-toolbar button {
+    margin-bottom: 0.5rem;
+    padding: 0.5rem;
+}
+
+
